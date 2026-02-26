@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postinstall": "rm -rf node_modules/@types/mapbox__point-geometry",
     "start": "next start",
     "lint": "eslint"
   },
