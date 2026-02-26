@@ -59,9 +59,9 @@ export default function AboutPage() {
         <EditorialStory
           heading="Geography & Landscape"
           eyebrow="The Land"
-          content={`The Dartry Mountains are a distinctive upland landscape defined by the Dartry limestone formation, a geological feature that dates back over 300 million years to the Carboniferous period. The mountains' most iconic feature is Ben Bulben, which rises 526 meters and dominates the landscape with its distinctive flat-topped profile.
+          content={`The Dartry Mountains are a distinctive upland landscape defined by the Dartry limestone formation, a geological feature that dates back over 300 million years to the Carboniferous period. The mountains' most iconic feature is Ben Bulben, which rises 526 metres and dominates the landscape with its distinctive flat-topped profile.
 
-The landscape was dramatically shaped by ice age glaciers during the last glacial period, which carved out the deep valleys and exposed the dramatic cliff faces that characterize the mountains today. The Gleniff Horseshoe, a glacial valley of outstanding beauty, is one of the most spectacular features, with near-vertical cliff faces rising hundreds of meters from the valley floor.
+The landscape was dramatically shaped by ice age glaciers during the last glacial period, which carved out the deep valleys and exposed the dramatic cliff faces that characterise the mountains today. The Gleniff Horseshoe, a glacial valley of outstanding beauty, is one of the most spectacular features, with near-vertical cliff faces rising hundreds of metres from the valley floor.
 
 The geology of the area creates unique karst features, including limestone pavement, caves, and sinkholes. These landforms, combined with the varied topography, create a mosaic of different habitats and microclimates that support an exceptional diversity of plant and animal life. The underlying limestone also influences the soil chemistry and vegetation patterns across the region.`}
         />
@@ -77,7 +77,7 @@ The geology of the area creates unique karst features, including limestone pavem
         <ImageTextSplit
           heading="A Living Landscape"
           eyebrow="Heritage & Tradition"
-          content={`The Dartry Mountains are not just a natural landscape—they are a living, working landscape shaped by centuries of human interaction. Small-scale farming has been practiced in and around the mountains for generations, with families managing the upland fields and pastures that characterize much of the region.
+          content={`The Dartry Mountains are not just a natural landscape—they are a living, working landscape shaped by centuries of human interaction. Small-scale farming has been practised in and around the mountains for generations, with families managing the upland fields and pastures that characterise much of the region.
 
 Traditional agricultural practices have played a crucial role in maintaining the open upland habitats that many rare species depend on. By keeping the landscape open and preventing natural afforestation, farmers have inadvertently become custodians of some of Ireland's most important wildlife habitats. Today, conservation efforts work closely with farming communities to ensure that economic viability and environmental protection go hand in hand.
 
@@ -93,7 +93,7 @@ The landscape also holds deep cultural significance for local communities, with 
         <ImageTextSplit
           heading="Ecological Significance"
           eyebrow="Conservation Status"
-          content={`The Dartry Mountains have been designated under European legislation as both a Special Protection Area (SPA) under the EU Birds Directive and a Special Area of Conservation (SAC) under the EU Habitats Directive. These European designations recognize the outstanding ecological value of the landscape and its importance for European biodiversity.
+          content={`The Dartry Mountains have been designated under European legislation as both a Special Protection Area (SPA) under the EU Birds Directive and a Special Area of Conservation (SAC) under the EU Habitats Directive. These European designations recognise the outstanding ecological value of the landscape and its importance for European biodiversity.
 
 The SPA designation reflects the mountains' importance for bird conservation. The region supports internationally significant populations of golden eagle, peregrine falcon, red-billed chough, and other upland bird species. These birds depend on the dramatic cliff faces for nesting and the open moorlands for hunting and foraging.
 

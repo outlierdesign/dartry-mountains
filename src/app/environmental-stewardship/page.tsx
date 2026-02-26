@@ -67,7 +67,7 @@ export default function EnvironmentalStewardshipPage() {
         <ImageTextSplit
           heading="Cliff Face & Rocky Habitats"
           eyebrow="Habitats"
-          content="The dramatic cliff faces of the Dartry Mountains support unique alpine and boreal heath communities adapted to steep, exposed slopes. Limestone pavements and rocky ledges provide habitat for rare arctic-alpine plant species, many of which are relicts from the last ice age. These specialized communities occur in crevices and on south-facing slopes where microhabitats create suitable growing conditions. The rocky habitats also provide essential nesting and perching sites for peregrine falcons and other cliff-dwelling birds."
+          content="The dramatic cliff faces of the Dartry Mountains support unique alpine and boreal heath communities adapted to steep, exposed slopes. Limestone pavements and rocky ledges provide habitat for rare arctic-alpine plant species, many of which are relicts from the last ice age. These specialised communities occur in crevices and on south-facing slopes where microhabitats create suitable growing conditions. The rocky habitats also provide essential nesting and perching sites for peregrine falcons and other cliff-dwelling birds."
           image_position="right"
           caption="Steep slope habitat beneath the cliff face"
         />
@@ -78,7 +78,7 @@ export default function EnvironmentalStewardshipPage() {
         <ImageTextSplit
           heading="Upland Grassland & Bog"
           eyebrow="Habitats"
-          content="The rushy hilly terrain of the Dartry Mountains supports a mosaic of upland grassland and blanket bog habitats. These open habitats, dominated by grasses, heathers, and bog plants, are maintained through traditional grazing practices that have shaped the landscape for centuries. The short-sward grassland is particularly important for red-billed chough, which feed on insects in these areas near their cliff-face nest sites. The blanket bog component stores vast quantities of carbon and supports specialized plant communities adapted to waterlogged, nutrient-poor conditions."
+          content="The rushy hilly terrain of the Dartry Mountains supports a mosaic of upland grassland and blanket bog habitats. These open habitats, dominated by grasses, heathers, and bog plants, are maintained through traditional grazing practices that have shaped the landscape for centuries. The short-sward grassland is particularly important for red-billed chough, which feed on insects in these areas near their cliff-face nest sites. The blanket bog component stores vast quantities of carbon and supports specialised plant communities adapted to waterlogged, nutrient-poor conditions."
           image_position="left"
           caption="Upland grassland at the base of the slopes"
         />
@@ -89,7 +89,7 @@ export default function EnvironmentalStewardshipPage() {
         <ImageTextSplit
           heading="Intact Peatland"
           eyebrow="Habitats"
-          content="Blanket bog is one of Ireland's most important habitats and the Dartry Mountains support extensive areas of this rare and threatened ecosystem. Intact peatland plays a crucial role in carbon storage, water management, and climate regulation. The acidic, waterlogged conditions support specialized plant communities including sphagnum mosses, cotton grass, and sundews. These bog habitats are increasingly recognized for their global significance in carbon sequestration and their vulnerability to degradation. Conservation and restoration of peatland is a key priority of the Dartry Mountains project."
+          content="Blanket bog is one of Ireland's most important habitats and the Dartry Mountains support extensive areas of this rare and threatened ecosystem. Intact peatland plays a crucial role in carbon storage, water management, and climate regulation. The acidic, waterlogged conditions support specialised plant communities including sphagnum mosses, cotton grass, and sundews. These bog habitats are increasingly recognised for their global significance in carbon sequestration and their vulnerability to degradation. Conservation and restoration of peatland is a key priority of the Dartry Mountains project."
           image_position="right"
           caption="Intact peatland habitat"
         />

@@ -126,7 +126,7 @@ export default function HomePage() {
       title: "Limestone Pavement",
       scientific_name: "Karst Landscape",
       description:
-        "Distinctive weathered limestone formations creating unique microhabitats for specialized plant and animal species.",
+        "Distinctive weathered limestone formations creating unique microhabitats for specialised plant and animal species.",
       type: "geology",
     },
     {
@@ -164,9 +164,9 @@ export default function HomePage() {
         <EditorialStory
           eyebrow="About"
           heading="An Iconic Irish Mountain Landscape"
-          content={`The Dartry Mountains form one of Ireland's most distinctive and ecologically significant upland landscapes. Spanning the border between Counties Sligo and Leitrim in northwest Ireland, these mountains are defined by dramatic limestone formations, including the iconic Ben Bulben, which rises 526 meters above the surrounding countryside.
+          content={`The Dartry Mountains form one of Ireland's most distinctive and ecologically significant upland landscapes. Spanning the border between Counties Sligo and Leitrim in northwest Ireland, these mountains are defined by dramatic limestone formations, including the iconic Ben Bulben, which rises 526 metres above the surrounding countryside.
 
-This ancient landscape was shaped by ice age glaciers and millennia of natural weathering, creating a unique terrain of steep valleys, cliff faces, and exposed limestone pavement. The Dartry limestone formation is a geological treasure, with karst features that create specialized microhabitats for rare alpine and subalpine plants found nowhere else in Ireland.
+This ancient landscape was shaped by ice age glaciers and millennia of natural weathering, creating a unique terrain of steep valleys, cliff faces, and exposed limestone pavement. The Dartry limestone formation is a geological treasure, with karst features that create specialised microhabitats for rare alpine and subalpine plants found nowhere else in Ireland.
 
 Today, the Dartry Mountains are protected under European legislation as a Special Protection Area (SPA) and Special Area of Conservation (SAC) due to their outstanding ecological significance. The region supports internationally important bird populations, rare plant species, and distinctive habitats including blanket bog, limestone pavement, and cliff face ecosystems. These protections ensure that this remarkable landscape continues to be managed for conservation while supporting the farming communities that have shaped the land for generations.`}
         />
