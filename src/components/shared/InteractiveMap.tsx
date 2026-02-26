@@ -80,25 +80,37 @@ export default function InteractiveMap({
     map.current.on("load", () => {
       if (!map.current) return;
 
-      // Add 3D terrain
-      map.current.addSource("mapbox-dem", {
-        type: "raster-dem",
-        url: "mapbox://mapbox.mapbox-terrain-dem-v1",
-        tileSize: 512,
-        maxzoom: 14,
-      });
-      map.current.setTerrain({ source: "mapbox-dem", exaggeration: 1.5 });
+      // Add 3D terrain (wrapped in try/catch in case style already includes terrain)
+      try {
+        if (!map.current.getSource("mapbox-dem")) {
+          map.current.addSource("mapbox-dem", {
+            type: "raster-dem",
+            url: "mapbox://mapbox.mapbox-terrain-dem-v1",
+            tileSize: 512,
+            maxzoom: 14,
+          });
+        }
+        map.current.setTerrain({ source: "mapbox-dem", exaggeration: 1.5 });
+      } catch (e) {
+        console.warn("Terrain already configured by style:", e);
+      }
 
-      // Add sky layer for atmosphere
-      map.current.addLayer({
-        id: "sky",
-        type: "sky",
-        paint: {
-          "sky-type": "atmosphere",
-          "sky-atmosphere-sun": [0.0, 0.0],
-          "sky-atmosphere-sun-intensity": 15,
-        },
-      });
+      // Add sky layer for atmosphere (skip if already exists)
+      try {
+        if (!map.current.getLayer("sky")) {
+          map.current.addLayer({
+            id: "sky",
+            type: "sky",
+            paint: {
+              "sky-type": "atmosphere",
+              "sky-atmosphere-sun": [0.0, 0.0],
+              "sky-atmosphere-sun-intensity": 15,
+            },
+          });
+        }
+      } catch (e) {
+        console.warn("Sky layer already configured by style:", e);
+      }
 
       // Add SPA boundary
       if (showSpaBoundary) {
