@@ -1,0 +1,103 @@
+{
+  "name": "map_section",
+  "display_name": "Map Section",
+  "is_root": false,
+  "is_nestable": true,
+  "schema": {
+    "heading": {
+      "type": "text",
+      "display_name": "Heading",
+      "required": true
+    },
+    "description": {
+      "type": "textarea",
+      "display_name": "Description",
+      "required": false
+    },
+    "center_lat": {
+      "type": "number",
+      "display_name": "Center Latitude",
+      "required": false,
+      "description": "Default: 54.3833 (Donegal Bay center)"
+    },
+    "center_lng": {
+      "type": "number",
+      "display_name": "Center Longitude",
+      "required": false,
+      "description": "Default: -8.3667 (Donegal Bay center)"
+    },
+    "zoom": {
+      "type": "number",
+      "display_name": "Zoom Level",
+      "required": false,
+      "description": "Default: 11, Range: 0-20"
+    },
+    "show_spa_boundary": {
+      "type": "boolean",
+      "display_name": "Show SPA Boundary",
+      "required": false,
+      "description": "Special Protected Area boundary"
+    },
+    "show_sac_boundary": {
+      "type": "boolean",
+      "display_name": "Show SAC Boundary",
+      "required": false,
+      "description": "Special Area of Conservation boundary"
+    },
+    "layers": {
+      "type": "bloks",
+      "display_name": "Map Layers",
+      "restrict_components": true,
+      "component_whitelist": [
+        "map_layer"
+      ],
+      "required": false
+    },
+    "background_color": {
+      "type": "option",
+      "display_name": "Background Color",
+      "options": [
+        {
+          "name": "Default",
+          "value": "default"
+        },
+        {
+          "name": "Muted",
+          "value": "muted"
+        },
+        {
+          "name": "Earth",
+          "value": "earth"
+        },
+        {
+          "name": "Moss",
+          "value": "moss"
+        },
+        {
+          "name": "Dark",
+          "value": "dark"
+        }
+      ],
+      "required": false
+    },
+    "spacing": {
+      "type": "option",
+      "display_name": "Spacing",
+      "options": [
+        {
+          "name": "Default",
+          "value": "default"
+        },
+        {
+          "name": "Compact",
+          "value": "compact"
+        },
+        {
+          "name": "Large",
+          "value": "large"
+        }
+      ],
+      "required": false
+    }
+  }
+}

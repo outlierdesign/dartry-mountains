@@ -1,0 +1,143 @@
+{
+  "name": "hero_section",
+  "display_name": "Hero Section",
+  "is_root": false,
+  "is_nestable": true,
+  "schema": {
+    "variant": {
+      "type": "option",
+      "display_name": "Variant",
+      "options": [
+        {
+          "name": "cinematic",
+          "value": "cinematic"
+        },
+        {
+          "name": "split",
+          "value": "split"
+        },
+        {
+          "name": "video",
+          "value": "video"
+        },
+        {
+          "name": "map",
+          "value": "map"
+        }
+      ],
+      "required": false
+    },
+    "heading": {
+      "type": "text",
+      "display_name": "Heading",
+      "required": true
+    },
+    "subheading": {
+      "type": "textarea",
+      "display_name": "Subheading",
+      "required": false
+    },
+    "eyebrow": {
+      "type": "text",
+      "display_name": "Eyebrow",
+      "required": false
+    },
+    "image": {
+      "type": "asset",
+      "display_name": "Image",
+      "required": true,
+      "description": "Alt text is required for accessibility"
+    },
+    "video_url": {
+      "type": "text",
+      "display_name": "Video URL",
+      "required": false
+    },
+    "overlay_opacity": {
+      "type": "number",
+      "display_name": "Overlay Opacity",
+      "required": false,
+      "description": "Default: 0.4, Range: 0-1"
+    },
+    "show_scroll_indicator": {
+      "type": "boolean",
+      "display_name": "Show Scroll Indicator",
+      "required": false
+    },
+    "cta_label": {
+      "type": "text",
+      "display_name": "CTA Label",
+      "required": false
+    },
+    "cta_link": {
+      "type": "multilink",
+      "display_name": "CTA Link",
+      "required": false
+    },
+    "cta_secondary_label": {
+      "type": "text",
+      "display_name": "Secondary CTA Label",
+      "required": false
+    },
+    "cta_secondary_link": {
+      "type": "multilink",
+      "display_name": "Secondary CTA Link",
+      "required": false
+    },
+    "stats": {
+      "type": "bloks",
+      "display_name": "Stats",
+      "restrict_components": true,
+      "component_whitelist": [
+        "stat_item"
+      ],
+      "required": false
+    },
+    "background_color": {
+      "type": "option",
+      "display_name": "Background Color",
+      "options": [
+        {
+          "name": "Default",
+          "value": "default"
+        },
+        {
+          "name": "Muted",
+          "value": "muted"
+        },
+        {
+          "name": "Earth",
+          "value": "earth"
+        },
+        {
+          "name": "Moss",
+          "value": "moss"
+        },
+        {
+          "name": "Dark",
+          "value": "dark"
+        }
+      ],
+      "required": false
+    },
+    "spacing": {
+      "type": "option",
+      "display_name": "Spacing",
+      "options": [
+        {
+          "name": "Default",
+          "value": "default"
+        },
+        {
+          "name": "Compact",
+          "value": "compact"
+        },
+        {
+          "name": "Large",
+          "value": "large"
+        }
+      ],
+      "required": false
+    }
+  }
+}

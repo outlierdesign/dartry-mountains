@@ -1,0 +1,80 @@
+{
+  "name": "video_card",
+  "display_name": "Video Card",
+  "is_root": false,
+  "is_nestable": true,
+  "schema": {
+    "title": {
+      "type": "text",
+      "display_name": "Title",
+      "required": true
+    },
+    "description": {
+      "type": "textarea",
+      "display_name": "Description",
+      "required": false
+    },
+    "video_url": {
+      "type": "text",
+      "display_name": "Video URL",
+      "required": true
+    },
+    "preview_image": {
+      "type": "asset",
+      "display_name": "Preview Image",
+      "required": true,
+      "description": "Alt text is required for accessibility"
+    },
+    "transcript": {
+      "type": "textarea",
+      "display_name": "Transcript",
+      "required": false
+    },
+    "background_color": {
+      "type": "option",
+      "display_name": "Background Color",
+      "options": [
+        {
+          "name": "Default",
+          "value": "default"
+        },
+        {
+          "name": "Muted",
+          "value": "muted"
+        },
+        {
+          "name": "Earth",
+          "value": "earth"
+        },
+        {
+          "name": "Moss",
+          "value": "moss"
+        },
+        {
+          "name": "Dark",
+          "value": "dark"
+        }
+      ],
+      "required": false
+    },
+    "spacing": {
+      "type": "option",
+      "display_name": "Spacing",
+      "options": [
+        {
+          "name": "Default",
+          "value": "default"
+        },
+        {
+          "name": "Compact",
+          "value": "compact"
+        },
+        {
+          "name": "Large",
+          "value": "large"
+        }
+      ],
+      "required": false
+    }
+  }
+}

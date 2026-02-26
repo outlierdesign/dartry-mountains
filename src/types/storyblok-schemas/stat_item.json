@@ -1,0 +1,24 @@
+{
+  "name": "stat_item",
+  "display_name": "Stat Item",
+  "is_root": false,
+  "is_nestable": true,
+  "schema": {
+    "label": {
+      "type": "text",
+      "display_name": "Label",
+      "required": true
+    },
+    "value": {
+      "type": "text",
+      "display_name": "Value",
+      "required": true
+    },
+    "suffix": {
+      "type": "text",
+      "display_name": "Suffix",
+      "required": false,
+      "description": "e.g., %, km², years"
+    }
+  }
+}

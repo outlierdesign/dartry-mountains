@@ -1,0 +1,29 @@
+{
+  "name": "timeline_milestone",
+  "display_name": "Timeline Milestone",
+  "is_root": false,
+  "is_nestable": true,
+  "schema": {
+    "date": {
+      "type": "text",
+      "display_name": "Date",
+      "required": true,
+      "description": "e.g., 2020, Q2 2021, March 2022"
+    },
+    "title": {
+      "type": "text",
+      "display_name": "Title",
+      "required": true
+    },
+    "description": {
+      "type": "textarea",
+      "display_name": "Description",
+      "required": true
+    },
+    "detail": {
+      "type": "richtext",
+      "display_name": "Detailed Information",
+      "required": false
+    }
+  }
+}

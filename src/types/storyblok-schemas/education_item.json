@@ -1,0 +1,52 @@
+{
+  "name": "education_item",
+  "display_name": "Education Item",
+  "is_root": false,
+  "is_nestable": true,
+  "schema": {
+    "title": {
+      "type": "text",
+      "display_name": "Title",
+      "required": true
+    },
+    "scientific_name": {
+      "type": "text",
+      "display_name": "Scientific Name",
+      "required": false
+    },
+    "description": {
+      "type": "textarea",
+      "display_name": "Description",
+      "required": true
+    },
+    "image": {
+      "type": "asset",
+      "display_name": "Image",
+      "required": false,
+      "description": "Alt text is required for accessibility"
+    },
+    "type": {
+      "type": "option",
+      "display_name": "Type",
+      "options": [
+        {
+          "name": "Species",
+          "value": "species"
+        },
+        {
+          "name": "Habitat",
+          "value": "habitat"
+        },
+        {
+          "name": "Geology",
+          "value": "geology"
+        },
+        {
+          "name": "Heritage",
+          "value": "heritage"
+        }
+      ],
+      "required": true
+    }
+  }
+}

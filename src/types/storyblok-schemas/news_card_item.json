@@ -1,0 +1,40 @@
+{
+  "name": "news_card_item",
+  "display_name": "News Card Item",
+  "is_root": false,
+  "is_nestable": true,
+  "schema": {
+    "title": {
+      "type": "text",
+      "display_name": "Title",
+      "required": true
+    },
+    "image": {
+      "type": "asset",
+      "display_name": "Image",
+      "required": false,
+      "description": "Alt text is required for accessibility"
+    },
+    "tag": {
+      "type": "text",
+      "display_name": "Tag",
+      "required": false
+    },
+    "date": {
+      "type": "text",
+      "display_name": "Date",
+      "required": true,
+      "description": "e.g., February 26, 2026"
+    },
+    "excerpt": {
+      "type": "textarea",
+      "display_name": "Excerpt",
+      "required": true
+    },
+    "link": {
+      "type": "multilink",
+      "display_name": "Link",
+      "required": true
+    }
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "name": "editorial_story",
+  "display_name": "Editorial Story",
+  "is_root": false,
+  "is_nestable": true,
+  "schema": {
+    "eyebrow": {
+      "type": "text",
+      "display_name": "Eyebrow",
+      "required": false
+    },
+    "heading": {
+      "type": "text",
+      "display_name": "Heading",
+      "required": true
+    },
+    "content": {
+      "type": "richtext",
+      "display_name": "Content",
+      "required": true
+    },
+    "image": {
+      "type": "asset",
+      "display_name": "Image",
+      "required": false,
+      "description": "Alt text is required for accessibility"
+    },
+    "image_position": {
+      "type": "option",
+      "display_name": "Image Position",
+      "options": [
+        {
+          "name": "Left",
+          "value": "left"
+        },
+        {
+          "name": "Right",
+          "value": "right"
+        },
+        {
+          "name": "None",
+          "value": "none"
+        }
+      ],
+      "required": false,
+      "description": "Default: none"
+    },
+    "pull_quote": {
+      "type": "textarea",
+      "display_name": "Pull Quote",
+      "required": false
+    },
+    "pull_quote_attribution": {
+      "type": "text",
+      "display_name": "Pull Quote Attribution",
+      "required": false
+    },
+    "background_color": {
+      "type": "option",
+      "display_name": "Background Color",
+      "options": [
+        {
+          "name": "Default",
+          "value": "default"
+        },
+        {
+          "name": "Muted",
+          "value": "muted"
+        },
+        {
+          "name": "Earth",
+          "value": "earth"
+        },
+        {
+          "name": "Moss",
+          "value": "moss"
+        },
+        {
+          "name": "Dark",
+          "value": "dark"
+        }
+      ],
+      "required": false
+    },
+    "spacing": {
+      "type": "option",
+      "display_name": "Spacing",
+      "options": [
+        {
+          "name": "Default",
+          "value": "default"
+        },
+        {
+          "name": "Compact",
+          "value": "compact"
+        },
+        {
+          "name": "Large",
+          "value": "large"
+        }
+      ],
+      "required": false
+    }
+  }
+}

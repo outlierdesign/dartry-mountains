@@ -1,0 +1,48 @@
+{
+  "name": "map_layer",
+  "display_name": "Map Layer",
+  "is_root": false,
+  "is_nestable": true,
+  "schema": {
+    "id": {
+      "type": "text",
+      "display_name": "Layer ID",
+      "required": true,
+      "description": "Unique identifier for the layer"
+    },
+    "label": {
+      "type": "text",
+      "display_name": "Layer Label",
+      "required": true
+    },
+    "type": {
+      "type": "option",
+      "display_name": "Layer Type",
+      "options": [
+        {
+          "name": "Flora",
+          "value": "flora"
+        },
+        {
+          "name": "Fauna",
+          "value": "fauna"
+        },
+        {
+          "name": "Heritage",
+          "value": "heritage"
+        },
+        {
+          "name": "Geology",
+          "value": "geology"
+        }
+      ],
+      "required": true
+    },
+    "visible": {
+      "type": "boolean",
+      "display_name": "Visible by Default",
+      "required": false,
+      "description": "Whether the layer is visible when the page loads"
+    }
+  }
+}

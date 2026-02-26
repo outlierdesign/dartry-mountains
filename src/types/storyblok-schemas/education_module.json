@@ -1,0 +1,73 @@
+{
+  "name": "education_module",
+  "display_name": "Education Module",
+  "is_root": false,
+  "is_nestable": true,
+  "schema": {
+    "heading": {
+      "type": "text",
+      "display_name": "Heading",
+      "required": true
+    },
+    "description": {
+      "type": "textarea",
+      "display_name": "Description",
+      "required": false
+    },
+    "items": {
+      "type": "bloks",
+      "display_name": "Education Items",
+      "restrict_components": true,
+      "component_whitelist": [
+        "education_item"
+      ],
+      "required": false
+    },
+    "background_color": {
+      "type": "option",
+      "display_name": "Background Color",
+      "options": [
+        {
+          "name": "Default",
+          "value": "default"
+        },
+        {
+          "name": "Muted",
+          "value": "muted"
+        },
+        {
+          "name": "Earth",
+          "value": "earth"
+        },
+        {
+          "name": "Moss",
+          "value": "moss"
+        },
+        {
+          "name": "Dark",
+          "value": "dark"
+        }
+      ],
+      "required": false
+    },
+    "spacing": {
+      "type": "option",
+      "display_name": "Spacing",
+      "options": [
+        {
+          "name": "Default",
+          "value": "default"
+        },
+        {
+          "name": "Compact",
+          "value": "compact"
+        },
+        {
+          "name": "Large",
+          "value": "large"
+        }
+      ],
+      "required": false
+    }
+  }
+}

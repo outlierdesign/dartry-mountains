@@ -1,0 +1,95 @@
+{
+  "name": "image_text_split",
+  "display_name": "Image Text Split",
+  "is_root": false,
+  "is_nestable": true,
+  "schema": {
+    "eyebrow": {
+      "type": "text",
+      "display_name": "Eyebrow",
+      "required": false
+    },
+    "heading": {
+      "type": "text",
+      "display_name": "Heading",
+      "required": true
+    },
+    "content": {
+      "type": "richtext",
+      "display_name": "Content",
+      "required": true
+    },
+    "image": {
+      "type": "asset",
+      "display_name": "Image",
+      "required": true,
+      "description": "Alt text is required for accessibility"
+    },
+    "image_position": {
+      "type": "option",
+      "display_name": "Image Position",
+      "options": [
+        {
+          "name": "Left",
+          "value": "left"
+        },
+        {
+          "name": "Right",
+          "value": "right"
+        }
+      ],
+      "required": true
+    },
+    "caption": {
+      "type": "text",
+      "display_name": "Image Caption",
+      "required": false
+    },
+    "background_color": {
+      "type": "option",
+      "display_name": "Background Color",
+      "options": [
+        {
+          "name": "Default",
+          "value": "default"
+        },
+        {
+          "name": "Muted",
+          "value": "muted"
+        },
+        {
+          "name": "Earth",
+          "value": "earth"
+        },
+        {
+          "name": "Moss",
+          "value": "moss"
+        },
+        {
+          "name": "Dark",
+          "value": "dark"
+        }
+      ],
+      "required": false
+    },
+    "spacing": {
+      "type": "option",
+      "display_name": "Spacing",
+      "options": [
+        {
+          "name": "Default",
+          "value": "default"
+        },
+        {
+          "name": "Compact",
+          "value": "compact"
+        },
+        {
+          "name": "Large",
+          "value": "large"
+        }
+      ],
+      "required": false
+    }
+  }
+}

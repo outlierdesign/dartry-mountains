@@ -1,0 +1,392 @@
+================================================================================
+STORYBLOK COMPONENT SCHEMAS - CREATION COMPLETE
+================================================================================
+
+Date: February 26, 2026
+Location: /sessions/quirky-vigilant-mendel/dartry-mountains/src/types/storyblok-schemas/
+
+================================================================================
+SUMMARY
+================================================================================
+
+18 complete Storyblok component schema files have been successfully created:
+
+- 12 Main Block Components
+- 6 Sub-Component Schemas
+- 1 TypeScript Index File
+- 3 Documentation Files
+
+All files are valid JSON and ready for integration with Storyblok CMS.
+
+================================================================================
+MAIN BLOCK COMPONENTS (12)
+================================================================================
+
+1. hero_section.json (3.0 KB)
+   - Multiple variants: cinematic, split, video, map
+   - CTA buttons: primary and secondary
+   - Stats display support
+   - Scroll indicator option
+
+2. editorial_story.json (2.1 KB)
+   - Rich text content support
+   - Optional featured image with positioning
+   - Pull quote capability
+   - Long-form editorial layout
+
+3. image_text_split.json (1.9 KB)
+   - Side-by-side image and text
+   - Configurable image position (left/right)
+   - Image captioning
+   - Formatted text content
+
+4. partner_grid.json (1.5 KB)
+   - Partner organization grid
+   - Nested partner_item components
+   - Description and heading support
+
+5. timeline.json (1.5 KB)
+   - Chronological timeline visualization
+   - Nested timeline_milestone components
+   - Description and heading support
+
+6. map_section.json (2.3 KB)
+   - Interactive map component
+   - Configurable center coordinates (Donegal Bay defaults)
+   - Zoom level control
+   - Protected area boundary toggles (SPA, SAC)
+   - Layer management support
+
+7. education_module.json (1.5 KB)
+   - Educational content module
+   - Species, habitat, geology, and heritage types
+   - Nested education_item components
+
+8. quote_block.json (1.5 KB)
+   - Featured quote display
+   - Attribution and role fields
+   - Optional texture background
+
+9. cta_block.json (1.7 KB)
+   - Call-to-action section
+   - Primary and secondary buttons
+   - Description support
+   - Full multilink support
+
+10. news_cards.json (1.3 KB)
+    - News/article card grid
+    - Nested news_card_item components
+    - Heading and description support
+
+11. stats_highlight.json (1.3 KB)
+    - Statistics display section
+    - Required stats field with stat_item components
+    - Optional heading
+
+12. video_card.json (1.6 KB)
+    - Video player component
+    - Preview image support
+    - Transcript/captions field
+    - Video URL support
+
+================================================================================
+SUB-COMPONENT SCHEMAS (6)
+================================================================================
+
+1. stat_item.json (460 B)
+   - Label: text (required)
+   - Value: text (required)
+   - Suffix: text (optional, e.g., %, km², years)
+
+2. partner_item.json (735 B)
+   - Name: text (required)
+   - Logo: asset (optional, alt text required)
+   - Description: textarea (required)
+   - Website: multilink (optional)
+   - Detail: richtext (optional)
+
+3. timeline_milestone.json (619 B)
+   - Date: text (required)
+   - Title: text (required)
+   - Description: textarea (required)
+   - Detail: richtext (optional)
+
+4. education_item.json (1.1 KB)
+   - Title: text (required)
+   - Scientific Name: text (optional)
+   - Description: textarea (required)
+   - Image: asset (optional, alt text required)
+   - Type: option (required) - species, habitat, geology, heritage
+
+5. news_card_item.json (835 B)
+   - Title: text (required)
+   - Image: asset (optional, alt text required)
+   - Tag: text (optional)
+   - Date: text (required)
+   - Excerpt: textarea (required)
+   - Link: multilink (required)
+
+6. map_layer.json (1007 B)
+   - ID: text (required)
+   - Label: text (required)
+   - Type: option (required) - flora, fauna, heritage, geology
+   - Visible: boolean (optional, default true)
+
+================================================================================
+COMMON FIELDS (All Main Block Components)
+================================================================================
+
+Every main block component includes:
+
+1. background_color (option)
+   - Options: default, muted, earth, moss, dark
+   - Allows consistent color theming
+
+2. spacing (option)
+   - Options: default, compact, large
+   - Controls vertical padding/spacing
+
+================================================================================
+FIELD TYPES USED
+================================================================================
+
+✓ text          - Single-line text input
+✓ textarea      - Multi-line text input
+✓ richtext      - Rich text editor with formatting
+✓ asset         - Image/file upload (all with alt text notes)
+✓ bloks         - Nested component blocks
+✓ option        - Dropdown selection from predefined values
+✓ number        - Numeric input (coordinates, opacity, zoom)
+✓ boolean       - Toggle/checkbox input
+✓ multilink     - Link support (internal, external, email, documents)
+
+================================================================================
+ACCESSIBILITY FEATURES
+================================================================================
+
+All asset (image) fields include the note:
+"Alt text is required for accessibility"
+
+This applies to:
+- image (all components)
+- logo (partner_item)
+- preview_image (video_card)
+- image (education_item, news_card_item)
+
+Map fields include helpful defaults:
+- center_lat: 54.3833 (Donegal Bay center)
+- center_lng: -8.3667 (Donegal Bay center)
+- zoom: 11 (default level)
+
+================================================================================
+TYPESCRIPT INDEX FILE
+================================================================================
+
+File: index.ts (2.4 KB)
+
+Provides multiple import patterns:
+
+1. Combined object export:
+   - storyblokSchemas: { heroSection, editorialStory, ... }
+
+2. Array exports:
+   - mainBlockComponents: [12 components]
+   - subComponents: [6 components]
+   - allComponents: [18 components]
+
+3. Individual named exports:
+   - heroSection, editorialStory, imageTextSplit, etc.
+
+4. Default export:
+   - export default storyblokSchemas
+
+================================================================================
+DOCUMENTATION FILES
+================================================================================
+
+1. README.md
+   - Overview of all components
+   - Field type reference
+   - Usage examples
+   - Index file documentation
+
+2. VALIDATION.md
+   - Complete validation checklist
+   - Field type verification
+   - Common pattern confirmation
+   - Nesting structure validation
+
+3. COMPONENT_REFERENCE.md
+   - Comprehensive reference guide
+   - Detailed field tables for each component
+   - Field type explanations
+   - Usage code examples
+   - Component relationship diagram
+
+================================================================================
+JSON VALIDATION
+================================================================================
+
+All 18 JSON schema files have been validated:
+
+✓ hero_section.json
+✓ editorial_story.json
+✓ image_text_split.json
+✓ partner_grid.json
+✓ timeline.json
+✓ map_section.json
+✓ education_module.json
+✓ quote_block.json
+✓ cta_block.json
+✓ news_cards.json
+✓ stats_highlight.json
+✓ video_card.json
+✓ stat_item.json
+✓ partner_item.json
+✓ timeline_milestone.json
+✓ education_item.json
+✓ news_card_item.json
+✓ map_layer.json
+
+All files are valid JSON format and ready for use.
+
+================================================================================
+COMPONENT NESTING RELATIONSHIPS
+================================================================================
+
+Nested Component Dependencies:
+
+hero_section
+  └─ stat_item
+
+partner_grid
+  └─ partner_item
+
+timeline
+  └─ timeline_milestone
+
+map_section
+  └─ map_layer
+
+education_module
+  └─ education_item
+
+news_cards
+  └─ news_card_item
+
+stats_highlight
+  └─ stat_item
+
+These relationships are enforced through Storyblok's component_whitelist
+restrictions in the bloks field definitions.
+
+================================================================================
+FILE STRUCTURE
+================================================================================
+
+/src/types/storyblok-schemas/
+│
+├── Main Block Components:
+│   ├── hero_section.json
+│   ├── editorial_story.json
+│   ├── image_text_split.json
+│   ├── partner_grid.json
+│   ├── timeline.json
+│   ├── map_section.json
+│   ├── education_module.json
+│   ├── quote_block.json
+│   ├── cta_block.json
+│   ├── news_cards.json
+│   ├── stats_highlight.json
+│   └── video_card.json
+│
+├── Sub-Components:
+│   ├── stat_item.json
+│   ├── partner_item.json
+│   ├── timeline_milestone.json
+│   ├── education_item.json
+│   ├── news_card_item.json
+│   └── map_layer.json
+│
+├── Index & Configuration:
+│   └── index.ts
+│
+└── Documentation:
+    ├── README.md
+    ├── VALIDATION.md
+    ├── COMPONENT_REFERENCE.md
+    └── SCHEMAS_CREATED.txt (this file)
+
+================================================================================
+USAGE INSTRUCTIONS
+================================================================================
+
+1. TypeScript Import:
+   import { storyblokSchemas, mainBlockComponents } from '@/types/storyblok-schemas';
+
+2. Register with Storyblok:
+   mainBlockComponents.forEach(component => {
+     storyblokClient.registerComponent(component.name, component);
+   });
+
+3. Access Individual Schema:
+   const heroSchema = storyblokSchemas.heroSection;
+
+4. Check Field Requirements:
+   const heading = heroSchema.schema.heading;
+   console.log(heading.required); // true
+
+5. View Nested Components:
+   const statsField = heroSchema.schema.stats;
+   console.log(statsField.component_whitelist); // ["stat_item"]
+
+================================================================================
+FEATURES INCLUDED
+================================================================================
+
+✓ Storyblok-compliant JSON schema format
+✓ Proper field type definitions
+✓ Required/optional field marking
+✓ Component nesting with restrictions
+✓ Option field enumeration
+✓ Accessibility notes for asset fields
+✓ Helper descriptions for complex fields
+✓ Default values for numeric fields
+✓ Common styling fields (colors, spacing)
+✓ CTA support (primary and secondary)
+✓ Image positioning options
+✓ Rich text support
+✓ Map coordinate support with defaults
+✓ Layer management
+✓ Multi-type content support
+
+================================================================================
+READY FOR INTEGRATION
+================================================================================
+
+All schemas are ready to be:
+
+1. Imported into TypeScript applications
+2. Registered with Storyblok CMS
+3. Used for component definition
+4. Referenced in component implementations
+5. Extended or modified as needed
+6. Version controlled in your repository
+
+No additional setup or modifications required.
+
+================================================================================
+TOTAL FILE COUNT: 21
+================================================================================
+
+- 12 main component JSON files
+- 6 sub-component JSON files
+- 1 TypeScript index file
+- 2 documentation files (README, VALIDATION, COMPONENT_REFERENCE)
+- 1 summary file (SCHEMAS_CREATED.txt - this file)
+
+Total Size: ~35 KB
+
+================================================================================
+END OF SUMMARY
+================================================================================

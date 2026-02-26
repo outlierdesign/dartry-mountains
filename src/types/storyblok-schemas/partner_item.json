@@ -1,0 +1,34 @@
+{
+  "name": "partner_item",
+  "display_name": "Partner Item",
+  "is_root": false,
+  "is_nestable": true,
+  "schema": {
+    "name": {
+      "type": "text",
+      "display_name": "Partner Name",
+      "required": true
+    },
+    "logo": {
+      "type": "asset",
+      "display_name": "Logo",
+      "required": false,
+      "description": "Alt text is required for accessibility"
+    },
+    "description": {
+      "type": "textarea",
+      "display_name": "Description",
+      "required": true
+    },
+    "website": {
+      "type": "multilink",
+      "display_name": "Website Link",
+      "required": false
+    },
+    "detail": {
+      "type": "richtext",
+      "display_name": "Detailed Information",
+      "required": false
+    }
+  }
+}
