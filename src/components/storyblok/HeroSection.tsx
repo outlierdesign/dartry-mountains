@@ -32,6 +32,7 @@ interface HeroSectionProps {
   stats?: Stat[]
   background_color?: string
   spacing?: "compact" | "normal" | "spacious"
+  padding_top?: "none" | "small" | "medium" | "large"
 }
 
 export default function HeroSection({
@@ -49,6 +50,7 @@ export default function HeroSection({
   stats = [],
   background_color = "bg-stone-950",
   spacing = "normal",
+  padding_top = "medium",
 }: HeroSectionProps) {
   const spacingClasses = {
     compact: "min-h-[50vh]",
@@ -56,9 +58,16 @@ export default function HeroSection({
     spacious: "min-h-[120vh]",
   }
 
+  const paddingTopClasses = {
+    none: "pt-0",
+    small: "pt-16",
+    medium: "pt-20",
+    large: "pt-28",
+  }
+
   if (variant === "split") {
     return (
-      <section className={cn("w-full", background_color)}>
+      <section className={cn("w-full", background_color, paddingTopClasses[padding_top])}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 items-center">
           {/* Text Content */}
           <div className="px-6 md:px-12 py-20 md:py-32 lg:py-40 flex flex-col justify-center">
@@ -129,7 +138,7 @@ export default function HeroSection({
   // Cinematic variant (default)
   return (
     <section
-      className={cn(spacingClasses[spacing], "relative w-full overflow-hidden flex items-center justify-center")}
+      className={cn(spacingClasses[spacing], paddingTopClasses[padding_top], "relative w-full overflow-hidden flex items-center justify-center")}
       style={{
         backgroundImage: image?.filename
           ? `url(${image.filename})`
