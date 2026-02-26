@@ -1,58 +1,48 @@
 import type { Metadata } from "next";
-import HeroSection from "@/components/storyblok/HeroSection";
-import CTABlock from "@/components/storyblok/CTABlock";
-
-// Catch-all page for future Storyblok-driven pages
-// In production, this would fetch content from Storyblok API
+import { notFound } from "next/navigation";
+import { fetchStory, fetchAllStories } from "@/lib/storyblok";
+import StoryblokPage from "@/components/shared/StoryblokPage";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  const stories = await fetchAllStories();
+  // Exclude pages that have dedicated routes
+  const dedicatedSlugs = ["home", "about", "the-project", "environmental-stewardship"];
+  return stories
+    .filter((s: any) => !dedicatedSlugs.includes(s.slug))
+    .map((s: any) => ({ slug: s.slug }));
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const title = slug
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
+  const story = await fetchStory(slug);
+
+  if (!story) {
+    const title = slug
+      .split("-")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+    return { title: `${title} | Dartry Mountains` };
+  }
 
   return {
-    title,
-    description: `Learn more about ${title} at the Dartry Mountains.`,
+    title: `${story.name} | Dartry Mountains`,
+    description: story.content?.meta_description || `Learn more about ${story.name} at the Dartry Mountains.`,
   };
 }
 
 export default async function DynamicPage({ params }: PageProps) {
   const { slug } = await params;
-  const title = slug
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
+  const story = await fetchStory(slug);
 
-  return (
-    <>
-      <HeroSection
-        variant="split"
-        heading={title}
-        subheading="This page is coming soon. Content will be managed through Storyblok CMS."
-        eyebrow="Coming Soon"
-      />
+  if (!story) {
+    notFound();
+  }
 
-      <section className="section-padding">
-        <div className="mx-auto max-w-3xl px-6 text-center">
-          <p className="text-lg text-muted-foreground">
-            This page will be populated with content from Storyblok. The
-            component architecture is in place and ready for editorial content.
-          </p>
-        </div>
-      </section>
-
-      <CTABlock
-        heading="Return Home"
-        description="Explore what's available on the Dartry Mountains website."
-        cta_label="Go to Home"
-        cta_link={{ cached_url: "/" }}
-      />
-    </>
-  );
+  return <StoryblokPage story={story} />;
 }
