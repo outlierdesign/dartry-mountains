@@ -168,7 +168,7 @@ export default function HomePage() {
 
 This ancient landscape was shaped by ice age glaciers and millennia of natural weathering, creating a unique terrain of steep valleys, cliff faces, and exposed limestone pavement. The Dartry limestone formation is a geological treasure, with karst features that create specialized microhabitats for rare alpine and subalpine plants found nowhere else in Ireland.
 
-Today, the Dartry Mountains are protected as a Special Protection Area (SPA) and Special Area of Conservation (SAC) due to their outstanding ecological significance. The region supports internationally important bird populations, rare plant species, and distinctive habitats including blanket bog, limestone pavement, and cliff face ecosystems. These protections ensure that this remarkable landscape continues to be managed for conservation while supporting the farming communities that have shaped the land for generations.`}
+Today, the Dartry Mountains are protected under European legislation as a Special Protection Area (SPA) and Special Area of Conservation (SAC) due to their outstanding ecological significance. The region supports internationally important bird populations, rare plant species, and distinctive habitats including blanket bog, limestone pavement, and cliff face ecosystems. These protections ensure that this remarkable landscape continues to be managed for conservation while supporting the farming communities that have shaped the land for generations.`}
         />
       </ScrollReveal>
 
@@ -197,7 +197,7 @@ The landscape also tells the story of human interaction with the natural world, 
       <ScrollReveal>
         <MapSection
           heading="Explore the Protected Areas"
-          description="An interactive map showing SPA and SAC boundaries, along with key ecological and heritage sites across the Dartry Mountains."
+          description="An interactive map showing SPA and SAC protected area boundaries across the Dartry Mountains."
           center_lat={54.3833}
           center_lng={-8.3667}
           zoom={11}

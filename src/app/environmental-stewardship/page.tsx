@@ -28,9 +28,9 @@ export default function EnvironmentalStewardshipPage() {
       {/* Editorial Story - Protected Areas Designations */}
       <ScrollReveal>
         <EditorialStory
-          heading="Protected Areas Designations"
+          heading="Protected Areas"
           eyebrow="Conservation Status"
-          content="The Dartry Mountains hold dual designation under European conservation legislation. As a Special Protection Area (SPA), it is protected under the EU Birds Directive for its populations of breeding chough, peregrine falcon, and other upland birds. As a Special Area of Conservation (SAC), it is protected under the EU Habitats Directive for its alpine and boreal heaths, calcareous rocky slopes, and Juniperus communis formations. These Protected Areas designations reflect the international significance of the landscape and ensure that conservation standards meet the highest European requirements for habitat and species protection."
+          content="The Dartry Mountains hold dual designation under European conservation legislation. As a Special Protection Area (SPA), it is protected under the EU Birds Directive for its populations of breeding chough, peregrine falcon, and other upland birds. As a Special Area of Conservation (SAC), it is protected under the EU Habitats Directive for its alpine and boreal heaths, calcareous rocky slopes, and Juniperus communis formations. These European Protected Areas designations reflect the international significance of the landscape and ensure that conservation standards meet the highest requirements for habitat and species protection."
         />
       </ScrollReveal>
 
@@ -78,7 +78,7 @@ export default function EnvironmentalStewardshipPage() {
         <ImageTextSplit
           heading="Upland Grassland & Bog"
           eyebrow="Habitats"
-          content="The rushy hilly terrain of the Dartry Mountains supports a mosaic of upland grassland and blanket bog habitats. These open habitats, dominated by grasses, heathers, and bog plants, are maintained through traditional grazing practices that have shaped the landscape for centuries. The short-sward grassland is particularly important for red-billed chough, which feed on invertebrates in these areas near their cliff-face nest sites. The blanket bog component stores vast quantities of carbon and supports specialized plant and invertebrate communities adapted to waterlogged, nutrient-poor conditions."
+          content="The rushy hilly terrain of the Dartry Mountains supports a mosaic of upland grassland and blanket bog habitats. These open habitats, dominated by grasses, heathers, and bog plants, are maintained through traditional grazing practices that have shaped the landscape for centuries. The short-sward grassland is particularly important for red-billed chough, which feed on insects in these areas near their cliff-face nest sites. The blanket bog component stores vast quantities of carbon and supports specialized plant communities adapted to waterlogged, nutrient-poor conditions."
           image_position="left"
           caption="Upland grassland at the base of the slopes"
         />
@@ -161,11 +161,20 @@ export default function EnvironmentalStewardshipPage() {
         />
       </ScrollReveal>
 
+      {/* Visit Responsibly Section */}
+      <ScrollReveal>
+        <EditorialStory
+          heading="Visit Responsibly"
+          eyebrow="Guidelines"
+          content={`This landscape is working farmland. Please do not cross field boundaries.\n\nKeep dogs away from this area. Please leave them at home or in your vehicle as they can disturb wildlife and livestock.\n\nTake all litter home and stay in public areas.\n\nFor more information about the flora of this region, visit wildflowersofireland.net or irishwildflowers.ie. For bird species information, visit birdwatchireland.ie.`}
+        />
+      </ScrollReveal>
+
       {/* CTA Block Section */}
       <ScrollReveal>
         <CTABlock
           heading="Explore Responsibly"
-          description="This landscape is working farmland. Please respect private property, close all gates, and take all litter home."
+          description="This landscape is working farmland. Please do not cross field boundaries."
           cta_label="Tourism Guidelines"
           cta_link={{ cached_url: "#guidelines" }}
           cta_secondary_label="Contact Us"

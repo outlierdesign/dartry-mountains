@@ -150,6 +150,36 @@ export default function Footer() {
               </li>
               <li>
                 <a
+                  href="https://www.birdwatchireland.ie/birds/chough"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white transition-colors hover:text-gold-400"
+                >
+                  BirdWatch Ireland – Chough
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.wildflowersofireland.net/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white transition-colors hover:text-gold-400"
+                >
+                  Wildflowers of Ireland
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.irishwildflowers.ie/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white transition-colors hover:text-gold-400"
+                >
+                  Irish Wildflowers
+                </a>
+              </li>
+              <li>
+                <a
                   href="https://lnt.org/"
                   target="_blank"
                   rel="noopener noreferrer"

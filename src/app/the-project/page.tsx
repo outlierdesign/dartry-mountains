@@ -81,7 +81,7 @@ export default function TheProjectPage() {
       <ScrollReveal>
         <ImageTextSplit
           heading="Working with Farmers"
-          eyebrow="Community Partnership"
+          eyebrow="Farming & Conservation"
           content="The success of the Dartry Mountains conservation project depends on close collaboration with the local farming community. Farmers play a vital role in managing the landscape through grazing practices that maintain the short grassland essential for protected species. Red-billed chough, in particular, rely on this carefully managed sward to feed near their cliff-face nesting sites. By working together, we demonstrate that conservation and farming can thrive as complementary land uses, benefiting both biodiversity and rural livelihoods."
           image_position="right"
         />

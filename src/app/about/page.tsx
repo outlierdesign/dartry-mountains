@@ -93,7 +93,7 @@ The landscape also holds deep cultural significance for local communities, with 
         <ImageTextSplit
           heading="Ecological Significance"
           eyebrow="Conservation Status"
-          content={`The Dartry Mountains have been designated as both a Special Protection Area (SPA) under the EU Birds Directive and a Special Area of Conservation (SAC) under the EU Habitats Directive. These international designations recognize the outstanding ecological value of the landscape and its importance for European biodiversity.
+          content={`The Dartry Mountains have been designated under European legislation as both a Special Protection Area (SPA) under the EU Birds Directive and a Special Area of Conservation (SAC) under the EU Habitats Directive. These European designations recognize the outstanding ecological value of the landscape and its importance for European biodiversity.
 
 The SPA designation reflects the mountains' importance for bird conservation. The region supports internationally significant populations of golden eagle, peregrine falcon, red-billed chough, and other upland bird species. These birds depend on the dramatic cliff faces for nesting and the open moorlands for hunting and foraging.
 
