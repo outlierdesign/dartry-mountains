@@ -37,11 +37,12 @@ storyblokInit({
 /**
  * Fetch a story from Storyblok by slug.
  * Returns null if the story is not found or if the token is not configured.
- * Set version to "draft" for the visual editor preview.
+ * Uses "draft" by default so the visual editor preview shows unsaved changes.
+ * Published site uses ISR caching so draft fetches don't affect performance.
  */
 export async function fetchStory(
   slug: string,
-  version: "published" | "draft" = "published"
+  version: "published" | "draft" = "draft"
 ) {
   const token = process.env.NEXT_PUBLIC_STORYBLOK_ACCESS_TOKEN;
   if (!token) {

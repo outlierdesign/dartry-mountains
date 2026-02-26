@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import ScrollReveal from "@/components/shared/ScrollReveal";
 import { components } from "@/lib/storyblok";
 
@@ -7,22 +10,85 @@ interface BlokData {
   [key: string]: any;
 }
 
-interface StoryblokPageProps {
-  story: {
-    content: {
-      body: BlokData[];
-      [key: string]: any;
-    };
+interface Story {
+  content: {
+    body: BlokData[];
     [key: string]: any;
   };
+  [key: string]: any;
+}
+
+interface StoryblokPageProps {
+  story: Story;
 }
 
 /**
  * Renders a Storyblok page story by iterating over the body bloks
  * and mapping each to the corresponding React component.
+ *
+ * Connects to the Storyblok bridge for live editing in the visual editor.
  */
-export default function StoryblokPage({ story }: StoryblokPageProps) {
-  const body = story.content?.body ?? [];
+export default function StoryblokPage({ story: initialStory }: StoryblokPageProps) {
+  const [story, setStory] = useState<Story>(initialStory);
+
+  useEffect(() => {
+    // Update if the server passes a new story (e.g. on navigation)
+    setStory(initialStory);
+  }, [initialStory]);
+
+  useEffect(() => {
+    // Connect to the Storyblok bridge for live editing
+    const isInsideEditor =
+      typeof window !== "undefined" &&
+      window.location.search.includes("_storyblok");
+
+    if (!isInsideEditor) return;
+
+    const handleMessage = (event: MessageEvent) => {
+      // Only accept messages from Storyblok
+      if (
+        !event.data ||
+        typeof event.data !== "string" ||
+        !event.data.includes('"action"')
+      ) {
+        return;
+      }
+
+      try {
+        const message = JSON.parse(event.data);
+
+        if (message.action === "input" && message.story) {
+          setStory(message.story);
+        }
+
+        if (message.action === "published" || message.action === "change") {
+          // Reload the page to get fresh published content
+          window.location.reload();
+        }
+      } catch {
+        // Not a JSON message — ignore
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+
+    // Tell Storyblok that the bridge is ready
+    if (window.parent !== window) {
+      window.parent.postMessage(
+        JSON.stringify({
+          action: "loaded",
+          storyId: initialStory?.id,
+        }),
+        "*"
+      );
+    }
+
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
+  }, [initialStory?.id]);
+
+  const body = story?.content?.body ?? [];
 
   return (
     <main className="w-full">
