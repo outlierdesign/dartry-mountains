@@ -32,9 +32,8 @@ interface StoryblokPageProps {
 export default function StoryblokPage({ story: initialStory }: StoryblokPageProps) {
   // useStoryblokState subscribes to the Storyblok bridge and
   // returns the latest story data (updated in real time when editing)
-  const story = useStoryblokState(initialStory, {
-    resolveRelations: [],
-  });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const story = useStoryblokState(initialStory as any);
 
   const body = (story ?? initialStory)?.content?.body ?? [];
 
