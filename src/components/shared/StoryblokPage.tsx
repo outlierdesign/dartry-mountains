@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import ScrollReveal from "@/components/shared/ScrollReveal";
+import { useStoryblokState } from "@storyblok/react";
 import { components } from "@/lib/storyblok";
 
 interface BlokData {
@@ -26,69 +26,17 @@ interface StoryblokPageProps {
  * Renders a Storyblok page story by iterating over the body bloks
  * and mapping each to the corresponding React component.
  *
- * Connects to the Storyblok bridge for live editing in the visual editor.
+ * Uses useStoryblokState to connect to the Storyblok bridge
+ * for real-time live editing in the visual editor.
  */
 export default function StoryblokPage({ story: initialStory }: StoryblokPageProps) {
-  const [story, setStory] = useState<Story>(initialStory);
+  // useStoryblokState subscribes to the Storyblok bridge and
+  // returns the latest story data (updated in real time when editing)
+  const story = useStoryblokState(initialStory, {
+    resolveRelations: [],
+  });
 
-  useEffect(() => {
-    // Update if the server passes a new story (e.g. on navigation)
-    setStory(initialStory);
-  }, [initialStory]);
-
-  useEffect(() => {
-    // Connect to the Storyblok bridge for live editing
-    const isInsideEditor =
-      typeof window !== "undefined" &&
-      window.location.search.includes("_storyblok");
-
-    if (!isInsideEditor) return;
-
-    const handleMessage = (event: MessageEvent) => {
-      // Only accept messages from Storyblok
-      if (
-        !event.data ||
-        typeof event.data !== "string" ||
-        !event.data.includes('"action"')
-      ) {
-        return;
-      }
-
-      try {
-        const message = JSON.parse(event.data);
-
-        if (message.action === "input" && message.story) {
-          setStory(message.story);
-        }
-
-        if (message.action === "published" || message.action === "change") {
-          // Reload the page to get fresh published content
-          window.location.reload();
-        }
-      } catch {
-        // Not a JSON message — ignore
-      }
-    };
-
-    window.addEventListener("message", handleMessage);
-
-    // Tell Storyblok that the bridge is ready
-    if (window.parent !== window) {
-      window.parent.postMessage(
-        JSON.stringify({
-          action: "loaded",
-          storyId: initialStory?.id,
-        }),
-        "*"
-      );
-    }
-
-    return () => {
-      window.removeEventListener("message", handleMessage);
-    };
-  }, [initialStory?.id]);
-
-  const body = story?.content?.body ?? [];
+  const body = (story ?? initialStory)?.content?.body ?? [];
 
   return (
     <main className="w-full">
@@ -99,7 +47,6 @@ export default function StoryblokPage({ story: initialStory }: StoryblokPageProp
           return null;
         }
 
-        // Transform nested bloks for components that expect arrays
         const props = transformBlokProps(blok);
 
         return (
@@ -124,16 +71,14 @@ function transformBlokProps(blok: BlokData): Record<string, any> {
 
   for (const [key, value] of Object.entries(rest)) {
     if (Array.isArray(value) && value.length > 0 && value[0]?.component) {
-      // This is a nested bloks array — transform each child
+      // Nested bloks array — transform each child
       props[key] = value.map((child: BlokData) => {
         const { component: _c, _uid: _u, ...childRest } = child;
         return childRest;
       });
     } else if (key === "center_lat" || key === "center_lng" || key === "zoom") {
-      // Convert number strings to actual numbers
       props[key] = Number(value) || undefined;
     } else if (key === "image" && value && typeof value === "object" && value.filename) {
-      // Storyblok asset format — pass through
       props[key] = value;
     } else {
       props[key] = value;
