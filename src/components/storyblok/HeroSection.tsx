@@ -14,6 +14,7 @@ interface ImageObject {
 interface Stat {
   label: string
   value: string
+  suffix?: string
 }
 
 interface HeroSectionProps {
