@@ -65,7 +65,7 @@ export default function InteractiveMap({
 
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: "mapbox://styles/mapbox/outdoors-v12",
+      style: "mapbox://styles/outlierdesign/cmm3wtt81001o01s45lua2uqx",
       center: [centerLng, centerLat],
       zoom,
       maxZoom: 15,
