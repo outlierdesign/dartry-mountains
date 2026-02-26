@@ -37,8 +37,12 @@ storyblokInit({
 /**
  * Fetch a story from Storyblok by slug.
  * Returns null if the story is not found or if the token is not configured.
+ * Set version to "draft" for the visual editor preview.
  */
-export async function fetchStory(slug: string) {
+export async function fetchStory(
+  slug: string,
+  version: "published" | "draft" = "published"
+) {
   const token = process.env.NEXT_PUBLIC_STORYBLOK_ACCESS_TOKEN;
   if (!token) {
     console.warn("Storyblok access token not configured");
@@ -48,7 +52,7 @@ export async function fetchStory(slug: string) {
   try {
     const storyblokApi = getStoryblokApi();
     const { data } = await storyblokApi.get(`cdn/stories/${slug}`, {
-      version: "published",
+      version,
     });
     return data?.story ?? null;
   } catch (e) {
