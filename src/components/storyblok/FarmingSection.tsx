@@ -22,7 +22,7 @@ Grazing maintains short grassland and allows protected birds like chough to feed
 
 This relationship between traditional farming practices and conservation is essential for the future of this remarkable landscape.`
 
-  const text = body || defaultBody
+  const text = body || defaultBody || ''
 
   return (
     <section id="farming" className="section-dark section-padding">

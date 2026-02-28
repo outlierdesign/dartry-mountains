@@ -22,7 +22,7 @@ It straddles the border between counties Sligo and Leitrim, encompassing areas a
 
 The protected area is characterised by dramatic limestone cliffs and their associated steep scree and grassland slopes, but also contains other habitats such as peatland, scrub, woodland, and streams. These rise up to 450m above the surrounding countryside.`
 
-  const text = body || defaultBody
+  const text = body || defaultBody || ''
 
   return (
     <section id="protected-areas" className="section-deep section-padding">

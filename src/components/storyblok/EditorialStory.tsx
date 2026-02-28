@@ -11,7 +11,7 @@ interface ImageObject {
 interface EditorialStoryProps {
   heading?: string
   eyebrow?: string
-  body: string
+  body?: string
   image?: ImageObject
   image_position?: "left" | "right"
   background?: "dark" | "light" | "cream"
@@ -54,7 +54,7 @@ export default function EditorialStory({
               </h2>
             )}
             <div className={cn("prose-dartry", background !== "dark" && "!text-stone-600")}>
-              {body.split('\n\n').map((paragraph, idx) => (
+              {(body || '').split('\n\n').filter(Boolean).map((paragraph, idx) => (
                 <p key={idx}>{paragraph}</p>
               ))}
             </div>
