@@ -1,31 +1,156 @@
-import HeroSection from "@/components/storyblok/HeroSection";
-import CTABlock from "@/components/storyblok/CTABlock";
+import HeroSection from "@/components/storyblok/HeroSection"
+import EditorialStory from "@/components/storyblok/EditorialStory"
+import ParallaxBreak from "@/components/storyblok/ParallaxBreak"
+import ProtectedAreas from "@/components/storyblok/ProtectedAreas"
+import HabitatCards from "@/components/storyblok/HabitatCards"
+import SpeciesProfiles from "@/components/storyblok/SpeciesProfiles"
+import FarmingSection from "@/components/storyblok/FarmingSection"
+import StatsBar from "@/components/storyblok/StatsBar"
+import MapSection from "@/components/storyblok/MapSection"
+import VisitResponsibly from "@/components/storyblok/VisitResponsibly"
+import ResourceLinks from "@/components/storyblok/ResourceLinks"
+import CTABlock from "@/components/storyblok/CTABlock"
+import ScrollReveal from "@/components/shared/ScrollReveal"
 
-/**
- * Fallback component shown when Storyblok content is unavailable.
- * Displays a minimal version of the home page.
- */
 export default function HomeFallback() {
   return (
-    <main className="w-full">
+    <main>
+      {/* 1. Hero Section */}
       <HeroSection
-        variant="cinematic"
-        heading="The Dartry Mountains"
-        subheading="A Special Protection Area and Special Area of Conservation in Counties Sligo and Leitrim, Ireland"
         eyebrow="Sligo & Leitrim, Ireland"
+        heading="The Dartry Mountains"
+        subheading="An iconic mountain range spanning the counties of Sligo and Leitrim, home to rare habitats, protected wildlife and a rich farming heritage."
+        image={{ filename: "/images/JGTWKH (1).jpg", alt: "Dartry Mountains landscape" }}
+        overlay_opacity={0.45}
         show_scroll_indicator={true}
+        cta_label="Explore the Mountains"
+        cta_link="#overview"
+        cta_secondary_label="View Map"
+        cta_secondary_link="#map"
         stats={[
-          { value: "526", suffix: "m", label: "Highest Peak" },
-          { value: "5,800", suffix: "ha", label: "Hectares Protected" },
-          { value: "40", suffix: "+", label: "Bird Species" },
+          { label: "Hectares Protected", value: "9,000", suffix: "+" },
+          { label: "EU Designations", value: "2" },
+          { label: "Protected Species", value: "15", suffix: "+" },
+          { label: "Active Farms", value: "100", suffix: "+" }
         ]}
+        padding_top="none"
       />
-      <CTABlock
-        heading="Content Loading"
-        description="Page content is managed through Storyblok CMS. If you're seeing this, the CMS connection may be temporarily unavailable."
-        cta_label="Refresh"
-        cta_link={{ cached_url: "/" }}
-      />
+
+      {/* 2. Editorial Story - About the Range */}
+      <ScrollReveal>
+        <div id="overview">
+          <EditorialStory
+            eyebrow="About the Range"
+            heading="An Iconic Mountain Range"
+            body={"The Dartry Mountains are a dramatic landscape of limestone plateaus, sheer cliffs, and deep valleys in the northwest of Ireland. Designated as both a Special Protection Area (SPA) and Special Area of Conservation (SAC), these mountains are of exceptional European ecological importance.\n\nThe range supports rare habitats including species-rich grasslands, peatlands, and cliff ecosystems that provide vital refuge for protected birds like the chough and peregrine falcon."}
+            image={{ filename: "/images/Female Hen Harrier on the Ground.jpg", alt: "Mountain landscape with wildflowers" }}
+            image_position="right"
+            background="cream"
+            bullets={[
+              "Special Protection Area (SPA) and Special Area of Conservation (SAC)",
+              "Exceptional European ecological importance",
+              "Home to rare habitats and protected species",
+              "Rich farming heritage spanning generations"
+            ]}
+          />
+        </div>
+      </ScrollReveal>
+
+      {/* 3. Parallax Break - First */}
+      <ScrollReveal>
+        <ParallaxBreak
+          image={{ filename: "/images/Male Harrier in Flight.jpg", alt: "Dartry Mountains panoramic landscape" }}
+          quote="These mountains hold some of the most important habitats and species in all of Europe."
+          attribution=""
+          overlay_opacity={0.55}
+        />
+      </ScrollReveal>
+
+      {/* 4. Protected Areas */}
+      <ScrollReveal>
+        <div id="protected-areas">
+          <ProtectedAreas />
+        </div>
+      </ScrollReveal>
+
+      {/* 5. Habitat Cards */}
+      <ScrollReveal>
+        <div id="habitats">
+          <HabitatCards />
+        </div>
+      </ScrollReveal>
+
+      {/* 6. Species Profiles */}
+      <ScrollReveal>
+        <div id="species">
+          <SpeciesProfiles />
+        </div>
+      </ScrollReveal>
+
+      {/* 7. Parallax Break - Second */}
+      <ScrollReveal>
+        <ParallaxBreak
+          image={{ filename: "/images/Food Pass.jpg", alt: "Farmland in the Dartry Mountains" }}
+          quote="The relationship between farming and nature in these mountains has sustained both for generations."
+          attribution=""
+          overlay_opacity={0.5}
+        />
+      </ScrollReveal>
+
+      {/* 8. Farming Section */}
+      <ScrollReveal>
+        <div id="farming">
+          <FarmingSection />
+        </div>
+      </ScrollReveal>
+
+      {/* 9. Stats Bar */}
+      <ScrollReveal>
+        <StatsBar
+          stats={[
+            { label: "Hectares of Protected Habitat", value: "9,000", suffix: "+" },
+            { label: "Rare Plant Species", value: "25", suffix: "+" },
+            { label: "Protected Bird Species", value: "15", suffix: "+" },
+            { label: "Years of Farming Heritage", value: "500", suffix: "+" }
+          ]}
+          background="dark"
+        />
+      </ScrollReveal>
+
+      {/* 10. Map Section */}
+      <ScrollReveal>
+        <div id="map">
+          <MapSection
+            heading="Interactive Map"
+            description="Explore the Special Protection Area and Special Area of Conservation boundaries of the Dartry Mountains."
+          />
+        </div>
+      </ScrollReveal>
+
+      {/* 11. Visit Responsibly */}
+      <ScrollReveal>
+        <div id="visit">
+          <VisitResponsibly />
+        </div>
+      </ScrollReveal>
+
+      {/* 12. Resource Links */}
+      <ScrollReveal>
+        <ResourceLinks />
+      </ScrollReveal>
+
+      {/* 13. CTA Block */}
+      <ScrollReveal>
+        <CTABlock
+          heading="Help Protect the Dartry Mountains"
+          subheading="Learn more about conservation efforts in the Dartry Mountains and how you can help preserve this extraordinary landscape for future generations."
+          cta_label="Contact Us"
+          cta_link="#contact"
+          cta_secondary_label="Learn More"
+          cta_secondary_link="#overview"
+          background="gold"
+        />
+      </ScrollReveal>
     </main>
-  );
+  )
 }

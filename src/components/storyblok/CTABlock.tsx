@@ -1,88 +1,54 @@
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-
-interface CTALink {
-  cached_url?: string;
-  url?: string;
-}
+import Link from "next/link"
 
 interface CTABlockProps {
-  heading: string;
-  description: string;
-  cta_label: string;
-  cta_link?: CTALink;
-  cta_secondary_label?: string;
-  cta_secondary_link?: CTALink;
-  background_color?: string;
-  spacing?: "compact" | "normal" | "generous";
+  heading: string
+  subheading?: string
+  cta_label: string
+  cta_link: string
+  cta_secondary_label?: string
+  cta_secondary_link?: string
+  background?: "dark" | "gold"
 }
 
 export default function CTABlock({
   heading,
-  description,
+  subheading,
   cta_label,
   cta_link,
   cta_secondary_label,
   cta_secondary_link,
-  background_color = "cream",
-  spacing = "normal",
+  background = "dark",
 }: CTABlockProps) {
-  const spacingClasses = {
-    compact: "py-16 md:py-20",
-    normal: "py-24 md:py-32",
-    generous: "py-32 md:py-40",
-  };
-
-  const bgClasses = {
-    cream: "bg-cream",
-    "cream-light": "bg-cream-light",
-    stone: "bg-stone-50",
-    transparent: "bg-transparent",
-  };
-
-  const primaryLink = cta_link?.cached_url || cta_link?.url || "#";
-  const secondaryLink = cta_secondary_link?.cached_url || cta_secondary_link?.url || "#";
+  const isGold = background === "gold"
 
   return (
-    <section
-      className={cn(
-        "w-full",
-        spacingClasses[spacing as keyof typeof spacingClasses],
-        bgClasses[background_color as keyof typeof bgClasses] || bgClasses.cream
-      )}
-    >
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Heading */}
-        <h2 className="font-display text-3xl md:text-4xl font-bold text-center text-moss-900 mb-4">
+    <section className={isGold ? "bg-gold-500 section-padding" : "section-dark section-padding"}>
+      <div className="container-narrow text-center">
+        <h2 className={`heading-section mb-4 ${isGold ? 'text-forest-dark' : 'text-white'}`}>
           {heading}
         </h2>
-
-        {/* Description */}
-        <p className="text-lg text-muted-foreground text-center mt-4 mb-8">
-          {description}
-        </p>
-
-        {/* Buttons */}
-        <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
-          {/* Primary Button */}
+        {subheading && (
+          <p className={`text-base mb-10 max-w-xl mx-auto ${isGold ? 'text-forest-dark/70' : 'text-white/60'}`}>
+            {subheading}
+          </p>
+        )}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
-            href={primaryLink}
-            className={cn(
-              "px-8 py-3 rounded-md font-medium transition-colors text-center",
-              "bg-moss-700 text-white hover:bg-moss-800"
-            )}
+            href={cta_link}
+            className={isGold
+              ? "btn-primary !bg-forest-dark !text-white hover:!bg-forest-deep"
+              : "btn-primary"
+            }
           >
             {cta_label}
           </Link>
-
-          {/* Secondary Button */}
-          {cta_secondary_label && (
+          {cta_secondary_label && cta_secondary_link && (
             <Link
-              href={secondaryLink}
-              className={cn(
-                "px-8 py-3 rounded-md font-medium transition-colors text-center",
-                "border border-moss-700 text-moss-700 hover:bg-moss-50"
-              )}
+              href={cta_secondary_link}
+              className={isGold
+                ? "btn-outline !border-forest-dark/30 !text-forest-dark hover:!bg-forest-dark/10"
+                : "btn-outline"
+              }
             >
               {cta_secondary_label}
             </Link>
@@ -90,5 +56,5 @@ export default function CTABlock({
         </div>
       </div>
     </section>
-  );
+  )
 }

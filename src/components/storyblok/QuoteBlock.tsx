@@ -1,80 +1,38 @@
-import { cn } from "@/lib/utils";
-
 interface QuoteBlockProps {
-  quote: string;
-  attribution: string;
-  role?: string;
-  show_texture?: boolean;
-  background_color?: "dark" | "light";
-  spacing?: "compact" | "normal" | "generous";
+  quote: string
+  attribution?: string
+  role?: string
+  background?: "dark" | "light"
 }
 
 export default function QuoteBlock({
   quote,
   attribution,
   role,
-  show_texture = false,
-  background_color = "dark",
-  spacing = "normal",
+  background = "dark",
 }: QuoteBlockProps) {
-  const spacingClasses = {
-    compact: "py-16 md:py-20",
-    normal: "py-20 md:py-28",
-    generous: "py-28 md:py-36",
-  };
-
-  const isDark = background_color === "dark";
-  const bgClass = isDark ? "bg-moss-800" : "bg-cream-dark";
-  const textClass = isDark ? "text-white" : "text-moss-800";
-  const attributionClass = isDark ? "text-cream" : "text-moss-700";
+  const isDark = background === "dark"
 
   return (
-    <section
-      className={cn(
-        "w-full",
-        spacingClasses[spacing as keyof typeof spacingClasses],
-        bgClass,
-        show_texture && "relative overflow-hidden"
-      )}
-    >
-      {/* Subtle texture background */}
-      {show_texture && (
-        <div
-          className="absolute inset-0 opacity-5 pointer-events-none"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle, currentColor 1px, transparent 1px)",
-            backgroundSize: "20px 20px",
-          }}
-        />
-      )}
-
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Opening quote mark */}
-        <div className="text-gold-400 text-6xl opacity-50 leading-none mb-6">
-          "
-        </div>
-
-        {/* Quote text */}
-        <blockquote
-          className={cn(
-            "font-display text-2xl md:text-4xl italic text-center leading-relaxed mb-8",
-            textClass
-          )}
-        >
-          {quote}
+    <section className={isDark ? "section-deep section-padding" : "section-muted section-padding"}>
+      <div className="container-narrow text-center">
+        <div className="divider-gold mx-auto mb-8" />
+        <blockquote className={`quote-accent ${isDark ? 'text-white' : 'text-foreground'}`}>
+          &ldquo;{quote}&rdquo;
         </blockquote>
-
-        {/* Attribution */}
-        <div className="text-center">
-          <p className={cn("text-sm font-medium", attributionClass)}>
-            — {attribution}
-          </p>
-          {role && (
-            <p className="text-sm text-muted-foreground mt-2">{role}</p>
-          )}
-        </div>
+        {attribution && (
+          <div className="mt-8">
+            <p className={`text-sm font-body font-medium ${isDark ? 'text-white/80' : 'text-foreground'}`}>
+              {attribution}
+            </p>
+            {role && (
+              <p className={`text-xs font-body mt-1 ${isDark ? 'text-white/40' : 'text-stone-400'}`}>
+                {role}
+              </p>
+            )}
+          </div>
+        )}
       </div>
     </section>
-  );
+  )
 }

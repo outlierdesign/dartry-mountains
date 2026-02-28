@@ -1,29 +1,57 @@
 import { storyblokInit, apiPlugin, getStoryblokApi } from "@storyblok/react/rsc";
 
+// Core components
 import HeroSection from "@/components/storyblok/HeroSection";
 import EditorialStory from "@/components/storyblok/EditorialStory";
-import ImageTextSplit from "@/components/storyblok/ImageTextSplit";
-import PartnerGrid from "@/components/storyblok/PartnerGrid";
-import Timeline from "@/components/storyblok/Timeline";
-import MapSection from "@/components/storyblok/MapSection";
-import EducationModule from "@/components/storyblok/EducationModule";
+import ParallaxBreak from "@/components/storyblok/ParallaxBreak";
+import VideoEmbed from "@/components/storyblok/VideoEmbed";
+import StatsBar from "@/components/storyblok/StatsBar";
 import QuoteBlock from "@/components/storyblok/QuoteBlock";
 import CTABlock from "@/components/storyblok/CTABlock";
 import NewsCards from "@/components/storyblok/NewsCards";
+import MapSection from "@/components/storyblok/MapSection";
+
+// Content-specific components
+import HabitatCards from "@/components/storyblok/HabitatCards";
+import SpeciesProfiles from "@/components/storyblok/SpeciesProfiles";
+import FarmingSection from "@/components/storyblok/FarmingSection";
+import VisitResponsibly from "@/components/storyblok/VisitResponsibly";
+import ResourceLinks from "@/components/storyblok/ResourceLinks";
+import GalleryGrid from "@/components/storyblok/GalleryGrid";
+import ProtectedAreas from "@/components/storyblok/ProtectedAreas";
+
+// Legacy components (kept for backward compatibility)
+import ImageTextSplit from "@/components/storyblok/ImageTextSplit";
+import PartnerGrid from "@/components/storyblok/PartnerGrid";
+import Timeline from "@/components/storyblok/Timeline";
+import EducationModule from "@/components/storyblok/EducationModule";
 import StatsHighlight from "@/components/storyblok/StatsHighlight";
 import VideoCard from "@/components/storyblok/VideoCard";
 
 export const components: Record<string, React.ComponentType<any>> = {
+  // New v2 components
   hero_section: HeroSection,
   editorial_story: EditorialStory,
-  image_text_split: ImageTextSplit,
-  partner_grid: PartnerGrid,
-  timeline: Timeline,
-  map_section: MapSection,
-  education_module: EducationModule,
+  parallax_break: ParallaxBreak,
+  video_embed: VideoEmbed,
+  stats_bar: StatsBar,
   quote_block: QuoteBlock,
   cta_block: CTABlock,
   news_cards: NewsCards,
+  map_section: MapSection,
+  habitat_cards: HabitatCards,
+  species_profiles: SpeciesProfiles,
+  farming_section: FarmingSection,
+  visit_responsibly: VisitResponsibly,
+  resource_links: ResourceLinks,
+  gallery_grid: GalleryGrid,
+  protected_areas: ProtectedAreas,
+
+  // Legacy (backward compatibility)
+  image_text_split: ImageTextSplit,
+  partner_grid: PartnerGrid,
+  timeline: Timeline,
+  education_module: EducationModule,
   stats_highlight: StatsHighlight,
   video_card: VideoCard,
 };

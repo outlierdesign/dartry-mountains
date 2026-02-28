@@ -1,203 +1,196 @@
-"use client";
+"use client"
 
-import { useEffect, useRef, useState } from "react";
-import mapboxgl from "mapbox-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
+import { useEffect, useRef, useState } from "react"
 
 interface InteractiveMapProps {
-  centerLat: number;
-  centerLng: number;
-  zoom: number;
-  showSpaBoundary: boolean;
-  showSacBoundary: boolean;
+  centerLat?: number
+  centerLng?: number
+  zoom?: number
+  showSpaBoundary?: boolean
+  showSacBoundary?: boolean
 }
 
-// Approximate SPA boundary polygon (simplified for demo)
-const SPA_BOUNDARY: GeoJSON.Feature = {
-  type: "Feature",
-  properties: { name: "Dartry Mountains SPA", designation: "Special Protection Area" },
-  geometry: {
-    type: "Polygon",
-    coordinates: [[
-      [-8.45, 54.35], [-8.42, 54.33], [-8.38, 54.32], [-8.33, 54.33],
-      [-8.30, 54.35], [-8.28, 54.38], [-8.29, 54.41], [-8.32, 54.43],
-      [-8.36, 54.44], [-8.40, 54.43], [-8.43, 54.41], [-8.45, 54.38],
-      [-8.45, 54.35],
-    ]],
-  },
-};
-
-const SAC_BOUNDARY: GeoJSON.Feature = {
-  type: "Feature",
-  properties: { name: "Ben Bulben, Gleniff and Glenade Complex SAC", designation: "Special Area of Conservation" },
-  geometry: {
-    type: "Polygon",
-    coordinates: [[
-      [-8.46, 54.34], [-8.43, 54.31], [-8.37, 54.30], [-8.31, 54.32],
-      [-8.27, 54.35], [-8.26, 54.39], [-8.27, 54.42], [-8.31, 54.45],
-      [-8.37, 54.46], [-8.42, 54.44], [-8.45, 54.41], [-8.47, 54.37],
-      [-8.46, 54.34],
-    ]],
-  },
-};
-
 export default function InteractiveMap({
-  centerLat,
-  centerLng,
-  zoom,
-  showSpaBoundary,
-  showSacBoundary,
+  centerLat = 54.3833,
+  centerLng = -8.3667,
+  zoom = 11,
+  showSpaBoundary = true,
+  showSacBoundary = true,
 }: InteractiveMapProps) {
-  const mapContainer = useRef<HTMLDivElement>(null);
-  const map = useRef<mapboxgl.Map | null>(null);
-  const [mapLoaded, setMapLoaded] = useState(false);
+  const mapContainer = useRef<HTMLDivElement>(null)
+  const mapRef = useRef<any>(null)
+  const [mapLoaded, setMapLoaded] = useState(false)
 
   useEffect(() => {
-    if (!mapContainer.current) return;
+    if (!mapContainer.current || mapRef.current) return
 
-    const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
+    const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
     if (!token) {
-      console.warn("Mapbox token not set. Map will not render.");
-      return;
+      console.warn("Mapbox token not configured")
+      return
     }
 
-    mapboxgl.accessToken = token;
+    let isMounted = true
 
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: "mapbox://styles/outlierdesign/cmm3wtt81001o01s45lua2uqx",
-      center: [centerLng, centerLat],
-      zoom,
-      maxZoom: 15,
-      minZoom: 8,
-      pitch: 60,
-      bearing: -20,
-    });
+    async function initMap() {
+      const mapboxgl = (await import("mapbox-gl")).default
+      // @ts-ignore - CSS import for mapbox styles
+      await import("mapbox-gl/dist/mapbox-gl.css").catch(() => {})
 
-    map.current.addControl(new mapboxgl.NavigationControl(), "top-right");
-    map.current.addControl(new mapboxgl.FullscreenControl(), "top-right");
+      if (!isMounted || !mapContainer.current) return
 
-    map.current.on("load", () => {
-      if (!map.current) return;
+      mapboxgl.accessToken = token!
 
-      // Add 3D terrain (wrapped in try/catch in case style already includes terrain)
-      try {
-        if (!map.current.getSource("mapbox-dem")) {
-          map.current.addSource("mapbox-dem", {
-            type: "raster-dem",
-            url: "mapbox://mapbox.mapbox-terrain-dem-v1",
-            tileSize: 512,
-            maxzoom: 14,
-          });
-        }
-        map.current.setTerrain({ source: "mapbox-dem", exaggeration: 1.5 });
-      } catch (e) {
-        console.warn("Terrain already configured by style:", e);
-      }
+      const map = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: "mapbox://styles/mapbox/outdoors-v12",
+        center: [centerLng, centerLat],
+        zoom,
+        attributionControl: true,
+        pitchWithRotate: false,
+      })
 
-      // Add sky layer for atmosphere (skip if already exists)
-      try {
-        if (!map.current.getLayer("sky")) {
-          map.current.addLayer({
-            id: "sky",
-            type: "sky",
-            paint: {
-              "sky-type": "atmosphere",
-              "sky-atmosphere-sun": [0.0, 0.0],
-              "sky-atmosphere-sun-intensity": 15,
+      mapRef.current = map
+
+      map.addControl(new mapboxgl.NavigationControl(), "top-right")
+      map.addControl(new mapboxgl.FullscreenControl(), "top-right")
+
+      map.on("load", () => {
+        if (!isMounted) return
+        setMapLoaded(true)
+
+        // SPA boundary (approximate polygon for Dartry Mountains SPA)
+        if (showSpaBoundary) {
+          map.addSource("spa-boundary", {
+            type: "geojson",
+            data: {
+              type: "Feature",
+              properties: { name: "Dartry Mountains SPA" },
+              geometry: {
+                type: "Polygon",
+                coordinates: [[
+                  [-8.45, 54.35],
+                  [-8.45, 54.42],
+                  [-8.35, 54.44],
+                  [-8.25, 54.42],
+                  [-8.25, 54.38],
+                  [-8.30, 54.35],
+                  [-8.45, 54.35],
+                ]],
+              },
             },
-          });
+          })
+
+          map.addLayer({
+            id: "spa-fill",
+            type: "fill",
+            source: "spa-boundary",
+            paint: {
+              "fill-color": "#4a7c23",
+              "fill-opacity": 0.15,
+            },
+          })
+
+          map.addLayer({
+            id: "spa-outline",
+            type: "line",
+            source: "spa-boundary",
+            paint: {
+              "line-color": "#4a7c23",
+              "line-width": 2,
+              "line-dasharray": [2, 2],
+            },
+          })
         }
-      } catch (e) {
-        console.warn("Sky layer already configured by style:", e);
-      }
 
-      // Add SPA boundary
-      if (showSpaBoundary) {
-        map.current.addSource("spa-boundary", {
-          type: "geojson",
-          data: SPA_BOUNDARY,
-        });
-        map.current.addLayer({
-          id: "spa-boundary-fill",
-          type: "fill",
-          source: "spa-boundary",
-          paint: {
-            "fill-color": "#2D5016",
-            "fill-opacity": 0.1,
-          },
-        });
-        map.current.addLayer({
-          id: "spa-boundary-line",
-          type: "line",
-          source: "spa-boundary",
-          paint: {
-            "line-color": "#2D5016",
-            "line-width": 2,
-            "line-dasharray": [2, 2],
-          },
-        });
-      }
+        // SAC boundary
+        if (showSacBoundary) {
+          map.addSource("sac-boundary", {
+            type: "geojson",
+            data: {
+              type: "Feature",
+              properties: { name: "Dartry Mountains SAC" },
+              geometry: {
+                type: "Polygon",
+                coordinates: [[
+                  [-8.46, 54.34],
+                  [-8.46, 54.43],
+                  [-8.36, 54.45],
+                  [-8.24, 54.43],
+                  [-8.24, 54.37],
+                  [-8.29, 54.34],
+                  [-8.46, 54.34],
+                ]],
+              },
+            },
+          })
 
-      // Add SAC boundary
-      if (showSacBoundary) {
-        map.current.addSource("sac-boundary", {
-          type: "geojson",
-          data: SAC_BOUNDARY,
-        });
-        map.current.addLayer({
-          id: "sac-boundary-fill",
-          type: "fill",
-          source: "sac-boundary",
-          paint: {
-            "fill-color": "#C4A35A",
-            "fill-opacity": 0.08,
-          },
-        });
-        map.current.addLayer({
-          id: "sac-boundary-line",
-          type: "line",
-          source: "sac-boundary",
-          paint: {
-            "line-color": "#C4A35A",
-            "line-width": 2,
-          },
-        });
-      }
+          map.addLayer({
+            id: "sac-fill",
+            type: "fill",
+            source: "sac-boundary",
+            paint: {
+              "fill-color": "#b08f42",
+              "fill-opacity": 0.1,
+            },
+          })
 
-      setMapLoaded(true);
-    });
+          map.addLayer({
+            id: "sac-outline",
+            type: "line",
+            source: "sac-boundary",
+            paint: {
+              "line-color": "#b08f42",
+              "line-width": 2,
+            },
+          })
+        }
+      })
+    }
+
+    initMap()
 
     return () => {
-      map.current?.remove();
-    };
-  }, [centerLat, centerLng, zoom, showSpaBoundary, showSacBoundary]);
+      isMounted = false
+      if (mapRef.current) {
+        mapRef.current.remove()
+        mapRef.current = null
+      }
+    }
+  }, [centerLat, centerLng, zoom, showSpaBoundary, showSacBoundary])
 
   return (
-    <div className="relative">
-      <div
-        ref={mapContainer}
-        className="h-[500px] w-full rounded-lg"
-        role="application"
-        aria-label="Interactive map of the Dartry Mountains showing SPA and SAC protected area boundaries"
-      />
+    <div className="relative w-full h-[500px] md:h-[600px]">
+      <div ref={mapContainer} className="absolute inset-0" />
 
-      {/* Boundary Legend */}
+      {/* Legend */}
       {mapLoaded && (
-        <div className="absolute right-4 top-20 rounded-lg bg-white/95 p-3 shadow-lg backdrop-blur-sm">
-          <p className="mb-2 text-xs font-semibold text-stone-700">Legend</p>
-          <div className="space-y-1.5">
-            <div className="flex items-center gap-2">
-              <span className="inline-block h-0.5 w-4 border-t-2 border-dashed border-moss-700" />
-              <span className="text-xs text-stone-600">SPA Boundary</span>
+        <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg p-3 shadow-md text-xs z-10">
+          <p className="font-semibold text-stone-800 mb-2">Legend</p>
+          {showSpaBoundary && (
+            <div className="flex items-center gap-2 mb-1">
+              <div className="w-4 h-3 rounded-sm border-2 border-dashed" style={{ borderColor: "#4a7c23", backgroundColor: "rgba(74,124,35,0.15)" }} />
+              <span className="text-stone-600">SPA Boundary</span>
             </div>
+          )}
+          {showSacBoundary && (
             <div className="flex items-center gap-2">
-              <span className="inline-block h-0.5 w-4 border-t-2 border-gold-400" />
-              <span className="text-xs text-stone-600">SAC Boundary</span>
+              <div className="w-4 h-3 rounded-sm border-2" style={{ borderColor: "#b08f42", backgroundColor: "rgba(176,143,66,0.1)" }} />
+              <span className="text-stone-600">SAC Boundary</span>
             </div>
+          )}
+        </div>
+      )}
+
+      {/* No token fallback */}
+      {!process.env.NEXT_PUBLIC_MAPBOX_TOKEN && (
+        <div className="absolute inset-0 flex items-center justify-center bg-stone-100 rounded-lg">
+          <div className="text-center">
+            <p className="text-stone-500 text-sm">Map requires Mapbox configuration</p>
+            <p className="text-stone-400 text-xs mt-1">Set NEXT_PUBLIC_MAPBOX_TOKEN in your environment</p>
           </div>
         </div>
       )}
     </div>
-  );
+  )
 }

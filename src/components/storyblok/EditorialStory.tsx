@@ -1,5 +1,7 @@
-import { cn } from "@/lib/utils"
+"use client"
+
 import Image from "next/image"
+import { cn } from "@/lib/utils"
 
 interface ImageObject {
   filename?: string
@@ -7,97 +9,83 @@ interface ImageObject {
 }
 
 interface EditorialStoryProps {
+  heading?: string
   eyebrow?: string
-  heading: string
-  content: string
+  body: string
   image?: ImageObject
-  image_position?: "left" | "right" | "none"
-  pull_quote?: string
-  pull_quote_attribution?: string
-  background_color?: string
-  spacing?: "compact" | "normal" | "spacious"
+  image_position?: "left" | "right"
+  background?: "dark" | "light" | "cream"
+  bullets?: string[]
 }
 
 export default function EditorialStory({
-  eyebrow,
   heading,
-  content,
+  eyebrow,
+  body,
   image,
-  image_position = "none",
-  pull_quote,
-  pull_quote_attribution,
-  background_color = "bg-cream",
-  spacing = "normal",
+  image_position = "right",
+  background = "light",
+  bullets = [],
 }: EditorialStoryProps) {
-  const spacingClasses = {
-    compact: "py-12 md:py-16",
-    normal: "py-24 md:py-32",
-    spacious: "py-32 md:py-48",
-  }
+  const bgClass = {
+    dark: "section-dark",
+    light: "section-light",
+    cream: "section-cream",
+  }[background]
 
-  const hasImage = image?.filename && image_position !== "none"
-
-  const contentSection = (
-    <div className="max-w-3xl mx-auto">
-      {eyebrow && (
-        <p className="text-xs tracking-widest uppercase text-moss-500 mb-4">
-          {eyebrow}
-        </p>
-      )}
-      <h2 className="font-display text-4xl md:text-5xl lg:text-6xl leading-tight text-stone-900 mb-8">
-        {heading}
-      </h2>
-
-      <div className="prose prose-lg max-w-none text-stone-700 mb-8">
-        <p className="leading-relaxed">{content}</p>
-      </div>
-
-      {pull_quote && (
-        <blockquote className="border-l-4 border-gold-400 pl-6 py-4 my-12 max-w-2xl">
-          <p className="font-display text-2xl md:text-3xl italic text-stone-800 mb-3">
-            {pull_quote}
-          </p>
-          {pull_quote_attribution && (
-            <p className="text-sm uppercase tracking-wide text-moss-600">
-              — {pull_quote_attribution}
-            </p>
-          )}
-        </blockquote>
-      )}
-    </div>
-  )
-
-  if (!hasImage) {
-    return (
-      <section className={cn("w-full", background_color, spacingClasses[spacing])}>
-        <div className="container max-w-7xl mx-auto px-6">
-          {contentSection}
-        </div>
-      </section>
-    )
-  }
+  const textColor = background === "dark" ? "text-white/65" : "text-stone-600"
+  const headingColor = background === "dark" ? "text-white" : "text-foreground"
 
   return (
-    <section className={cn("w-full", background_color, spacingClasses[spacing])}>
-      <div className="container max-w-7xl mx-auto px-6">
+    <section className={cn(bgClass, "section-padding")}>
+      <div className="container-content">
         <div className={cn(
-          "grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center",
-          image_position === "right" && "lg:flex lg:flex-row-reverse"
+          "grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center",
+          image_position === "left" && "lg:[&>*:first-child]:order-2"
         )}>
-          {/* Image Side */}
-          <div className="relative h-96 lg:h-full lg:min-h-[500px]">
-            {image?.filename && (
-              <Image
-                src={image.filename}
-                alt={image.alt || "Editorial image"}
-                fill
-                className="object-cover rounded-lg"
-              />
+          {/* Text */}
+          <div>
+            {eyebrow && (
+              <p className="label-eyebrow mb-4">{eyebrow}</p>
+            )}
+            {heading && (
+              <h2 className={cn("heading-section mb-8", headingColor)}>
+                {heading}
+              </h2>
+            )}
+            <div className={cn("prose-dartry", background !== "dark" && "!text-stone-600")}>
+              {body.split('\n\n').map((paragraph, idx) => (
+                <p key={idx}>{paragraph}</p>
+              ))}
+            </div>
+            {bullets.length > 0 && (
+              <ul className="mt-6 space-y-3">
+                {bullets.map((bullet, idx) => (
+                  <li key={idx} className="flex items-start gap-3">
+                    <span className="mt-1.5 w-5 h-5 rounded-full bg-moss-500 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    </span>
+                    <span className={cn("text-sm leading-relaxed", textColor)}>{bullet}</span>
+                  </li>
+                ))}
+              </ul>
             )}
           </div>
 
-          {/* Content Side */}
-          {contentSection}
+          {/* Image */}
+          {image?.filename && (
+            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden">
+              <Image
+                src={image.filename}
+                alt={image.alt || ""}
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
+            </div>
+          )}
         </div>
       </div>
     </section>

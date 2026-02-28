@@ -6,15 +6,13 @@ import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navigation = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "The Project", href: "/the-project" },
-  { label: "Stewardship", href: "/environmental-stewardship" },
-  { label: "Partners", href: "#partners" },
-  { label: "Education", href: "#education" },
+  { label: "Overview", href: "#overview" },
+  { label: "Protected Areas", href: "#protected-areas" },
+  { label: "Habitats", href: "#habitats" },
+  { label: "Species", href: "#species" },
+  { label: "Farming", href: "#farming" },
   { label: "Map", href: "#map" },
-  { label: "News", href: "#news" },
-  { label: "Contact", href: "#contact" },
+  { label: "Visit Responsibly", href: "#visit" },
 ];
 
 export default function Header() {
@@ -23,80 +21,119 @@ export default function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0);
+      setIsScrolled(window.scrollY > 20);
     };
-
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const closeMobileMenu = () => {
-    setIsMobileMenuOpen(false);
-  };
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [isMobileMenuOpen]);
 
   return (
     <header
       className={cn(
-        "fixed top-0 z-50 w-full transition-all duration-300",
+        "fixed top-0 z-50 w-full transition-all duration-500",
         isScrolled
-          ? "bg-moss-700/95 backdrop-blur-md"
-          : "bg-transparent"
+          ? "bg-forest-dark/95 backdrop-blur-md py-3"
+          : "bg-transparent py-5"
       )}
     >
-      <nav className="mx-auto max-w-7xl px-6 py-4">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link
-            href="/"
-            className="font-display text-2xl font-bold text-white transition-colors hover:text-gold-400"
-          >
-            The Dartry Mountains
-          </Link>
+      <nav className="container-content flex items-center justify-between">
+        {/* Logo */}
+        <Link
+          href="/"
+          className="font-display text-xl md:text-2xl font-light italic text-white transition-colors hover:text-gold-400 tracking-tight"
+        >
+          Dartry Mountains
+        </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden items-center space-x-8 md:flex">
-            {navigation.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                className="relative text-white transition-colors hover:text-gold-400"
-              >
-                {item.label}
-                <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-gold-400 transition-all duration-300 group-hover:w-full hover:w-full" />
-              </Link>
-            ))}
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 text-white hover:text-gold-400 transition-colors"
-            aria-label="Toggle menu"
-          >
-            {isMobileMenuOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
-          </button>
+        {/* Desktop Navigation */}
+        <div className="hidden lg:flex items-center gap-8">
+          {navigation.map((item) => (
+            <Link
+              key={item.label}
+              href={item.href}
+              className={cn(
+                "font-body text-[13px] font-medium uppercase tracking-[1.5px]",
+                "text-white/70 transition-colors duration-200 hover:text-white",
+                "relative after:absolute after:bottom-[-4px] after:left-0 after:right-0",
+                "after:h-[1.5px] after:bg-gold-400 after:scale-x-0 after:transition-transform",
+                "after:duration-300 hover:after:scale-x-100"
+              )}
+            >
+              {item.label}
+            </Link>
+          ))}
         </div>
 
-        {/* Mobile Navigation Menu */}
-        {isMobileMenuOpen && (
-          <div className="absolute left-0 right-0 top-full mt-0 flex flex-col bg-moss-700/95 backdrop-blur-md md:hidden">
-            {navigation.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                onClick={closeMobileMenu}
-                className="px-6 py-3 text-white transition-colors hover:bg-moss-600 hover:text-gold-400 border-b border-white/10 last:border-b-0"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </div>
-        )}
+        {/* Mobile Menu Button */}
+        <button
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="lg:hidden p-2 text-white hover:text-gold-400 transition-colors"
+          aria-label="Toggle menu"
+          aria-expanded={isMobileMenuOpen}
+        >
+          {isMobileMenuOpen ? (
+            <X className="h-6 w-6" />
+          ) : (
+            <Menu className="h-6 w-6" />
+          )}
+        </button>
       </nav>
+
+      {/* Mobile Slide-out Panel */}
+      <div
+        className={cn(
+          "fixed inset-0 top-0 z-40 lg:hidden transition-all duration-500",
+          isMobileMenuOpen ? "visible" : "invisible"
+        )}
+      >
+        {/* Backdrop */}
+        <div
+          className={cn(
+            "absolute inset-0 bg-black/50 transition-opacity duration-500",
+            isMobileMenuOpen ? "opacity-100" : "opacity-0"
+          )}
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+
+        {/* Panel */}
+        <div
+          className={cn(
+            "absolute top-0 right-0 h-full w-[280px] bg-forest-dark/98 backdrop-blur-xl",
+            "flex flex-col pt-24 px-8 transition-transform duration-500 ease-out",
+            isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+          )}
+        >
+          {navigation.map((item, idx) => (
+            <Link
+              key={item.label}
+              href={item.href}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={cn(
+                "font-body text-[14px] font-medium uppercase tracking-[1.5px]",
+                "text-white/70 hover:text-gold-400 transition-all duration-300",
+                "py-4 border-b border-white/10",
+                isMobileMenuOpen
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 translate-x-4"
+              )}
+              style={{
+                transitionDelay: isMobileMenuOpen ? `${idx * 50 + 200}ms` : "0ms",
+              }}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      </div>
     </header>
   );
 }

@@ -1,11 +1,13 @@
 @import "tailwindcss";
 
 /* ============================================
-   DARTRY MOUNTAINS — DESIGN SYSTEM TOKENS
+   DARTRY MOUNTAINS v2 — DESIGN SYSTEM
+   Harrier layout methodology + Dartry palette
+   Fonts: Fraunces + Epilogue + Cambo
    ============================================ */
 
 @theme inline {
-  /* --- Color Palette: Earth Tones --- */
+  /* --- Color Palette: Dartry Earth Tones --- */
   --color-moss-50: #f0f5eb;
   --color-moss-100: #dce8d2;
   --color-moss-200: #b8d1a5;
@@ -16,6 +18,10 @@
   --color-moss-700: #2d5016;
   --color-moss-800: #1f3a0f;
   --color-moss-900: #1a3a0f;
+
+  --color-forest-dark: #192C20;
+  --color-forest-deep: #113B29;
+  --color-forest-darkest: #122017;
 
   --color-earth-50: #f7f3ee;
   --color-earth-100: #ede5d8;
@@ -31,7 +37,7 @@
   --color-stone-50: #f5f5f2;
   --color-stone-100: #eae9e3;
   --color-stone-200: #d4d3ca;
-  --color-stone-300: #bbbaa e;
+  --color-stone-300: #bbbab0;
   --color-stone-400: #a3a295;
   --color-stone-500: #8b8b7a;
   --color-stone-600: #737264;
@@ -58,12 +64,14 @@
   --color-sky-500: #4a7f9e;
   --color-sky-600: #3a6780;
 
-  --color-cream: #f5f3e8;
+  --color-cream: #F5F3E8;
   --color-cream-dark: #ebe8da;
+  --color-ivory: #F5F7F2;
 
-  /* --- Typography --- */
-  --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
-  --font-body: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  /* --- Typography (Harrier-style modern pairing) --- */
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-body: 'Epilogue', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-accent: 'Cambo', Georgia, serif;
 
   /* --- Semantic Colors (shadcn/ui compatible) --- */
   --color-background: var(--color-cream);
@@ -84,11 +92,18 @@
   --color-input: var(--color-stone-200);
   --color-ring: var(--color-moss-500);
 
-  /* --- Radius --- */
-  --radius-sm: 0.25rem;
-  --radius-md: 0.375rem;
-  --radius-lg: 0.5rem;
-  --radius-xl: 0.75rem;
+  /* --- Radius (Harrier: larger, softer) --- */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+
+  /* --- Shadows (Harrier-style) --- */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 20px 50px rgba(0, 0, 0, 0.15);
 }
 
 /* ============================================
@@ -111,13 +126,15 @@
     color: var(--color-foreground);
     background: var(--color-background);
     line-height: 1.7;
+    font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
-    line-height: 1.15;
+    line-height: 1.1;
+    font-weight: 300;
     color: var(--color-foreground);
   }
 
@@ -135,7 +152,7 @@
 }
 
 /* ============================================
-   COMPONENT UTILITIES
+   HARRIER-STYLE COMPONENT UTILITIES
    ============================================ */
 
 @layer utilities {
@@ -143,37 +160,261 @@
     text-wrap: balance;
   }
 
+  /* --- Section Patterns (Harrier rhythm: dark/light/dark) --- */
   .section-padding {
-    padding-top: 6rem;
-    padding-bottom: 6rem;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
   }
 
   @media (min-width: 768px) {
     .section-padding {
-      padding-top: 8rem;
-      padding-bottom: 8rem;
+      padding-top: 6.25rem;
+      padding-bottom: 6.25rem;
     }
   }
 
+  .section-dark {
+    background-color: var(--color-forest-dark);
+    color: rgba(255, 255, 255, 0.95);
+  }
+
+  .section-dark h1,
+  .section-dark h2,
+  .section-dark h3,
+  .section-dark h4 {
+    color: #ffffff;
+  }
+
+  .section-deep {
+    background-color: var(--color-forest-deep);
+    color: rgba(255, 255, 255, 0.95);
+  }
+
+  .section-deep h1,
+  .section-deep h2,
+  .section-deep h3,
+  .section-deep h4 {
+    color: #ffffff;
+  }
+
+  .section-light {
+    background-color: var(--color-ivory);
+    color: var(--color-foreground);
+  }
+
+  .section-cream {
+    background-color: var(--color-cream);
+    color: var(--color-foreground);
+  }
+
+  .section-muted {
+    background-color: var(--color-stone-50);
+    color: var(--color-foreground);
+  }
+
+  /* --- Eyebrow Label (Harrier-style) --- */
+  .label-eyebrow {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    color: var(--color-gold-500);
+  }
+
+  .section-dark .label-eyebrow,
+  .section-deep .label-eyebrow {
+    color: var(--color-gold-400);
+  }
+
+  /* --- Display Typography (Harrier-style) --- */
+  .heading-display {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(2.5rem, 6vw, 4.875rem);
+    line-height: 1.1;
+  }
+
+  .heading-section {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(1.75rem, 3.5vw, 2.8125rem);
+    line-height: 1.2;
+  }
+
+  /* --- Prose (editorial body text) --- */
   .prose-dartry {
     max-width: 65ch;
     line-height: 1.8;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.65);
   }
 
   .prose-dartry p {
     margin-bottom: 1.5em;
   }
 
-  /* Scroll reveal animation classes */
+  .section-light .prose-dartry,
+  .section-cream .prose-dartry,
+  .section-muted .prose-dartry {
+    color: var(--color-muted-foreground);
+  }
+
+  /* --- Pull Quote (Cambo accent) --- */
+  .quote-accent {
+    font-family: var(--font-accent);
+    font-style: italic;
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    line-height: 1.6;
+  }
+
+  /* --- Stat Number (Harrier-style) --- */
+  .stat-number {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(2.5rem, 4vw, 3.75rem);
+    line-height: 1;
+    color: var(--color-gold-400);
+  }
+
+  .stat-label {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  /* --- Parallax Break --- */
+  .parallax-break {
+    min-height: 50vh;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .parallax-break::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(25, 44, 32, 0.55);
+  }
+
+  .parallax-break > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* --- Card (Harrier-style rounded) --- */
+  .card-rounded {
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    transition: transform 250ms ease, box-shadow 250ms ease;
+  }
+
+  .card-rounded:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* --- Scroll Reveal Animation --- */
   .reveal {
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
   }
 
   .reveal.visible {
     opacity: 1;
     transform: translateY(0);
+  }
+
+  /* --- Divider (gold accent) --- */
+  .divider-gold {
+    width: 60px;
+    height: 2px;
+    background-color: var(--color-gold-400);
+  }
+
+  /* --- Container widths --- */
+  .container-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .container-wide {
+    max-width: 1450px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .container-narrow {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  /* --- Button Styles (Harrier-adapted with Dartry gold) --- */
+  .btn-primary {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 14px 32px;
+    background-color: var(--color-gold-500);
+    color: #ffffff;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background-color 150ms ease, transform 150ms ease;
+    display: inline-block;
+    text-decoration: none;
+  }
+
+  .btn-primary:hover {
+    background-color: var(--color-gold-600);
+    transform: translateY(-1px);
+  }
+
+  .btn-outline {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 14px 32px;
+    background-color: transparent;
+    color: var(--color-gold-500);
+    border: 1px solid var(--color-gold-500);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 150ms ease;
+    display: inline-block;
+    text-decoration: none;
+  }
+
+  .btn-outline:hover {
+    background-color: var(--color-gold-500);
+    color: #ffffff;
+  }
+
+  .section-dark .btn-outline,
+  .section-deep .btn-outline {
+    color: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .section-dark .btn-outline:hover,
+  .section-deep .btn-outline:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #ffffff;
   }
 
   /* Skip to content */
