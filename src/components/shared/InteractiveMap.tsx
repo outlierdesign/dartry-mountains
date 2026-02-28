@@ -73,8 +73,8 @@ export default function InteractiveMap({
 
       const map = new mapboxgl.Map({
         container: mapContainer.current,
-        // Custom Dartry Mountains style (first draft) with 3D terrain
-        style: "mapbox://styles/outlierdesign/cmm3wtt81001o01s45lua2uqx",
+        // Outdoors base with 3D terrain overlay for mountain topography
+        style: "mapbox://styles/mapbox/outdoors-v12",
         center: [centerLng, centerLat],
         zoom,
         maxZoom: 15,
