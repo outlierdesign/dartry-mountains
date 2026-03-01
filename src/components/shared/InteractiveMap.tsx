@@ -89,7 +89,7 @@ export default function InteractiveMap({
       const map = new mapboxgl.Map({
         container: mapContainer.current,
         // Outdoors base with 3D terrain overlay for mountain topography
-        style: "mapbox://styles/mapbox/outdoors-v12",
+        style: "mapbox://styles/mapbox/satellite-streets-v12",
         center: [centerLng, centerLat],
         zoom,
         maxZoom: 15,
@@ -150,8 +150,8 @@ export default function InteractiveMap({
             type: "fill",
             source: "spa-boundary",
             paint: {
-              "fill-color": "#2D5016",
-              "fill-opacity": 0.1,
+              "fill-color": "#4ADE80",
+              "fill-opacity": 0.15,
             },
           })
           map.addLayer({
@@ -159,8 +159,8 @@ export default function InteractiveMap({
             type: "line",
             source: "spa-boundary",
             paint: {
-              "line-color": "#2D5016",
-              "line-width": 2,
+              "line-color": "#4ADE80",
+              "line-width": 2.5,
               "line-dasharray": [2, 2],
             },
           })
@@ -177,8 +177,8 @@ export default function InteractiveMap({
             type: "fill",
             source: "sac-boundary",
             paint: {
-              "fill-color": "#C4A35A",
-              "fill-opacity": 0.08,
+              "fill-color": "#FBBF24",
+              "fill-opacity": 0.12,
             },
           })
           map.addLayer({
@@ -186,8 +186,8 @@ export default function InteractiveMap({
             type: "line",
             source: "sac-boundary",
             paint: {
-              "line-color": "#C4A35A",
-              "line-width": 2,
+              "line-color": "#FBBF24",
+              "line-width": 2.5,
             },
           })
         }
@@ -217,13 +217,13 @@ export default function InteractiveMap({
           <p className="font-semibold text-stone-800 mb-2">Legend</p>
           {showSpaBoundary && (
             <div className="flex items-center gap-2 mb-1">
-              <div className="w-4 h-3 rounded-sm border-2 border-dashed" style={{ borderColor: "#2D5016", backgroundColor: "rgba(45,80,22,0.1)" }} />
+              <div className="w-4 h-3 rounded-sm border-2 border-dashed" style={{ borderColor: "#4ADE80", backgroundColor: "rgba(74,222,128,0.15)" }} />
               <span className="text-stone-600">SPA Boundary</span>
             </div>
           )}
           {showSacBoundary && (
             <div className="flex items-center gap-2">
-              <div className="w-4 h-3 rounded-sm border-2" style={{ borderColor: "#C4A35A", backgroundColor: "rgba(196,163,90,0.08)" }} />
+              <div className="w-4 h-3 rounded-sm border-2" style={{ borderColor: "#FBBF24", backgroundColor: "rgba(251,191,36,0.12)" }} />
               <span className="text-stone-600">SAC Boundary</span>
             </div>
           )}
