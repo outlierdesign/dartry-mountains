@@ -40,6 +40,18 @@ const SAC_BOUNDARY: GeoJSON.Feature = {
   },
 }
 
+// Load Mapbox GL CSS via <link> tag in document head
+function loadMapboxCSS() {
+  if (typeof document === "undefined") return
+  const id = "mapbox-gl-css"
+  if (document.getElementById(id)) return
+  const link = document.createElement("link")
+  link.id = id
+  link.rel = "stylesheet"
+  link.href = "https://api.mapbox.com/mapbox-gl-js/v3.19.0/mapbox-gl.css"
+  document.head.appendChild(link)
+}
+
 export default function InteractiveMap({
   centerLat = 54.3833,
   centerLng = -8.3667,
@@ -50,6 +62,7 @@ export default function InteractiveMap({
   const mapContainer = useRef<HTMLDivElement>(null)
   const mapRef = useRef<any>(null)
   const [mapLoaded, setMapLoaded] = useState(false)
+  const [noToken, setNoToken] = useState(false)
 
   useEffect(() => {
     if (!mapContainer.current || mapRef.current) return
@@ -57,15 +70,17 @@ export default function InteractiveMap({
     const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
     if (!token) {
       console.warn("Mapbox token not configured")
+      setNoToken(true)
       return
     }
+
+    // Load the CSS first
+    loadMapboxCSS()
 
     let isMounted = true
 
     async function initMap() {
       const mapboxgl = (await import("mapbox-gl")).default
-      // @ts-ignore - CSS import for mapbox styles
-      await import("mapbox-gl/dist/mapbox-gl.css").catch(() => {})
 
       if (!isMounted || !mapContainer.current) return
 
@@ -194,7 +209,7 @@ export default function InteractiveMap({
 
   return (
     <div className="relative w-full h-[500px] md:h-[600px]">
-      <div ref={mapContainer} className="absolute inset-0" />
+      <div ref={mapContainer} className="absolute inset-0 rounded-lg" />
 
       {/* Legend */}
       {mapLoaded && (
@@ -216,7 +231,7 @@ export default function InteractiveMap({
       )}
 
       {/* No token fallback */}
-      {!process.env.NEXT_PUBLIC_MAPBOX_TOKEN && (
+      {noToken && (
         <div className="absolute inset-0 flex items-center justify-center bg-stone-100 rounded-lg">
           <div className="text-center px-6">
             <svg className="w-12 h-12 mx-auto mb-4 text-stone-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
