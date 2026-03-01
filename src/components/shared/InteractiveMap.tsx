@@ -209,7 +209,7 @@ export default function InteractiveMap({
 
   return (
     <div className="relative w-full h-[500px] md:h-[600px]">
-      <div ref={mapContainer} className="absolute inset-0 rounded-lg" />
+      <div ref={mapContainer} className="w-full h-full rounded-lg" />
 
       {/* Legend */}
       {mapLoaded && (
