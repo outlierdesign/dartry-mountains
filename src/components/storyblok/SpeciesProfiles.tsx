@@ -28,6 +28,7 @@ const defaultSpecies: Species[] = [
     irish_name: "Cág cosdearg",
     scientific_name: "Pyrrhocorax pyrrhocorax",
     description: "The chough is a striking crow with a long, curved red bill and bright red legs. Irish chough make up about 60% of a distinct isolated Northwest European population, making this site of international importance.",
+    image: { filename: "/images/birds/chough.jpg", alt: "Red-billed Chough in the Dartry Mountains" },
     facts: [
       "Known for distinctive call and aerial acrobatics",
       "Amber listed on Birds of Conservation Concern",
@@ -39,7 +40,8 @@ const defaultSpecies: Species[] = [
     name: "Peregrine Falcon",
     irish_name: "Fabhcún gorm",
     scientific_name: "Falco peregrinus",
-    description: "Famous as the fastest animal on Earth, reaching speeds of 389 km/h in a hunting dive. A powerful, compact falcon with long pointed wings, dark head, and distinctive black 'moustache' stripe.",
+    description: "Famous as the fastest animal on Earth, reaching speeds of 389 km/h in a hunting dive. A powerful, compact falcon with long pointed wings, dark head, and distinctive black 'moustache' stripe. Known for spectacular aerobatics.",
+    image: { filename: "/images/birds/peregrine-falcon.jpg", alt: "Peregrine Falcon in the Dartry Mountains" },
     facts: [
       "Recovered strongly after 20th century declines",
       "Nests on cliff ledges and rocky crags",

@@ -16,11 +16,11 @@ export default function ProtectedAreas({
   body,
   image,
 }: ProtectedAreasProps) {
-  const defaultBody = `This area is part of the Sligo/Leitrim Uplands Special Protection Area (SPA) and Special Area of Conservation (SAC), recognised on a European scale for the protection of the red-billed chough and the peregrine falcon.
+  const defaultBody = `The Dartrys straddle the border between counties Sligo and Leitrim, encompassing areas around Benbulben, Glencar Valley, the Gleniff Horseshoe, Luke's Bridge, the Glenade Valley, and Arroo — reaching 647 metres at its highest point on Truskmore.
 
-It straddles the border between counties Sligo and Leitrim, encompassing areas around Benbulben, Glencar Valley, the Gleniff Horseshoe, Luke's Bridge, the Glenade Valley, and Arroo.
+This area is part of the Sligo/Leitrim Uplands Special Protection Area (SPA) and Special Area of Conservation (SAC), recognised on a European scale for the protection of the red-billed chough and the peregrine falcon.
 
-The protected area is characterised by dramatic limestone cliffs and their associated steep scree and grassland slopes, but also contains other habitats such as peatland, scrub, woodland, and streams. These rise up to 450m above the surrounding countryside.`
+The protected area is characterised by dramatic limestone cliffs and their associated steep scree and grassland slopes, but also contains other habitats such as peatland, scrub, woodland, and streams.`
 
   const text = body || defaultBody || ''
 
@@ -35,9 +35,15 @@ The protected area is characterised by dramatic limestone cliffs and their assoc
                 <p key={idx}>{p}</p>
               ))}
             </div>
-            <div className="mt-8 inline-flex items-center gap-2 px-4 py-2 bg-moss-600/30 rounded-lg">
-              <span className="w-2 h-2 rounded-full bg-gold-400" />
-              <span className="text-xs text-white/70 font-body font-medium">EU Birds Directive & Habitats Directive Protected Area</span>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a href="https://www.npws.ie/legislation/eu-directives/birds-directive" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 bg-moss-600/30 hover:bg-moss-600/50 rounded-lg transition-colors">
+                <span className="w-2 h-2 rounded-full bg-gold-400" />
+                <span className="text-xs text-white/70 font-body font-medium">EU Birds Directive ↗</span>
+              </a>
+              <a href="https://www.npws.ie/legislation/eu-directives/habitats-directive" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 bg-moss-600/30 hover:bg-moss-600/50 rounded-lg transition-colors">
+                <span className="w-2 h-2 rounded-full bg-gold-400" />
+                <span className="text-xs text-white/70 font-body font-medium">EU Habitats Directive ↗</span>
+              </a>
             </div>
           </div>
           <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-forest-dark/50">

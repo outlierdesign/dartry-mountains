@@ -1,4 +1,4 @@
-import { Home, PawPrint, Trash2 } from "lucide-react"
+import { Home, PawPrint, Trash2, Fence } from "lucide-react"
 
 interface GuidelineItem {
   title: string
@@ -16,19 +16,24 @@ interface VisitResponsiblyProps {
 
 const defaultGuidelines: GuidelineItem[] = [
   {
-    title: "Respect Private Land",
-    description: "This landscape is working farmland. Please do not cross field boundaries.",
+    title: "Respect Private Farmland",
+    description: "This landscape is working farmland. Please respect private farmland and entrances at all times.",
     icon: "home",
   },
   {
     title: "No Dogs",
-    description: "Keep dogs away from this area. Please leave them at home or in your vehicle as they can disturb wildlife and livestock.",
+    description: "Please do not bring your dog to this area. Dogs can disturb wildlife and livestock.",
     icon: "paw",
   },
   {
     title: "Leave No Trace",
-    description: "Take all litter home and stay in public areas.",
+    description: "Take your litter with you. Leave nothing behind.",
     icon: "trash",
+  },
+  {
+    title: "Keep Entrances Clear",
+    description: "Landowners require access to land and livestock at all times. Please do not block gates or entrances.",
+    icon: "gate",
   },
 ]
 
@@ -36,10 +41,11 @@ const iconMap: Record<string, React.ReactNode> = {
   home: <Home className="w-6 h-6" />,
   paw: <PawPrint className="w-6 h-6" />,
   trash: <Trash2 className="w-6 h-6" />,
+  gate: <Fence className="w-6 h-6" />,
 }
 
 export default function VisitResponsibly({
-  heading = "Visit Responsibly",
+  heading = "Please Visit Responsibly",
   subtitle = "The habitats and wildlife found here are sensitive to disturbance and need careful farming management practices to continue. You can make a positive impact by following these guidelines.",
   guidelines,
   external_link_url = "https://www.leavenotraceireland.org/",
@@ -57,7 +63,7 @@ export default function VisitResponsibly({
           )}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
           {items.map((item, idx) => (
             <div key={idx} className="card-rounded bg-white shadow-md p-8 text-center">
               <div className="w-14 h-14 rounded-full bg-moss-600 text-white flex items-center justify-center mx-auto mb-5">

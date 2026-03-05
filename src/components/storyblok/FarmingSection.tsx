@@ -12,7 +12,7 @@ interface FarmingSectionProps {
 }
 
 export default function FarmingSection({
-  heading = "Hill Farming & Conservation",
+  heading = "Hill Farming on the Dartrys & Conservation",
   body,
   image,
 }: FarmingSectionProps) {

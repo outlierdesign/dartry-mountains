@@ -63,6 +63,8 @@ export default function InteractiveMap({
   const mapRef = useRef<any>(null)
   const [mapLoaded, setMapLoaded] = useState(false)
   const [noToken, setNoToken] = useState(false)
+  const [spaVisible, setSpaVisible] = useState(true)
+  const [sacVisible, setSacVisible] = useState(true)
 
   useEffect(() => {
     if (!mapContainer.current || mapRef.current) return
@@ -211,21 +213,43 @@ export default function InteractiveMap({
     <div className="relative w-full h-[500px] md:h-[600px]">
       <div ref={mapContainer} className="w-full h-full rounded-lg" />
 
-      {/* Legend */}
+      {/* Legend with toggles */}
       {mapLoaded && (
         <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg p-3 shadow-md text-xs z-10">
           <p className="font-semibold text-stone-800 mb-2">Legend</p>
           {showSpaBoundary && (
-            <div className="flex items-center gap-2 mb-1">
-              <div className="w-4 h-3 rounded-sm border-2 border-dashed" style={{ borderColor: "#4ADE80", backgroundColor: "rgba(74,222,128,0.15)" }} />
-              <span className="text-stone-600">SPA Boundary</span>
-            </div>
+            <button
+              onClick={() => {
+                const map = mapRef.current
+                if (!map) return
+                const next = !spaVisible
+                setSpaVisible(next)
+                const vis = next ? "visible" : "none"
+                try { map.setLayoutProperty("spa-fill", "visibility", vis) } catch {}
+                try { map.setLayoutProperty("spa-outline", "visibility", vis) } catch {}
+              }}
+              className="flex items-center gap-2 mb-1.5 w-full hover:bg-stone-100 rounded px-1 py-0.5 transition-colors"
+            >
+              <div className={`w-4 h-3 rounded-sm border-2 border-dashed transition-opacity ${spaVisible ? '' : 'opacity-30'}`} style={{ borderColor: "#4ADE80", backgroundColor: "rgba(74,222,128,0.15)" }} />
+              <span className={`transition-opacity ${spaVisible ? 'text-stone-600' : 'text-stone-400 line-through'}`}>SPA Boundary</span>
+            </button>
           )}
           {showSacBoundary && (
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-3 rounded-sm border-2" style={{ borderColor: "#FBBF24", backgroundColor: "rgba(251,191,36,0.12)" }} />
-              <span className="text-stone-600">SAC Boundary</span>
-            </div>
+            <button
+              onClick={() => {
+                const map = mapRef.current
+                if (!map) return
+                const next = !sacVisible
+                setSacVisible(next)
+                const vis = next ? "visible" : "none"
+                try { map.setLayoutProperty("sac-fill", "visibility", vis) } catch {}
+                try { map.setLayoutProperty("sac-outline", "visibility", vis) } catch {}
+              }}
+              className="flex items-center gap-2 w-full hover:bg-stone-100 rounded px-1 py-0.5 transition-colors"
+            >
+              <div className={`w-4 h-3 rounded-sm border-2 transition-opacity ${sacVisible ? '' : 'opacity-30'}`} style={{ borderColor: "#FBBF24", backgroundColor: "rgba(251,191,36,0.12)" }} />
+              <span className={`transition-opacity ${sacVisible ? 'text-stone-600' : 'text-stone-400 line-through'}`}>SAC Boundary</span>
+            </button>
           )}
         </div>
       )}

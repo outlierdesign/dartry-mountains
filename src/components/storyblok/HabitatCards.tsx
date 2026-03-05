@@ -26,16 +26,19 @@ const defaultHabitats: Habitat[] = [
   {
     title: "Species-Rich Grassland",
     description: "The limestone slopes support grasslands of exceptional floristic diversity. Rare flowering plants have been recorded here, including Yellow saxifrage and Mossy saxifrage — some with their only known Irish stations at this site.",
+    image: { filename: "/images/habitats/species-rich-grassland.jpg", alt: "Species-rich grassland in the Dartry Mountains" },
     color: "bg-moss-500",
   },
   {
     title: "Wet Grassland",
     description: "Rough wet grassland at lower elevations provides vital habitat for wildlife including skylark, meadow pipit, frogs, and a diverse range of invertebrates that form the base of the food chain.",
+    image: { filename: "/images/habitats/wet-grassland.jpg", alt: "Wet grassland habitat in the Dartry Mountains" },
     color: "bg-sky-500",
   },
   {
     title: "Peatland",
     description: "Blanket bog and heath ecosystems cap the higher elevations. These carbon-rich habitats support specialised plant communities and play a crucial role in water regulation and carbon storage.",
+    image: { filename: "/images/habitats/peatland.jpg", alt: "Peatland habitat in the Dartry Mountains" },
     color: "bg-earth-500",
   },
 ]
