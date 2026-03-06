@@ -1,4 +1,6 @@
 import { Metadata } from "next";
+import { fetchStory } from "@/lib/storyblok";
+import StoryblokPage from "@/components/shared/StoryblokPage";
 import HomeFallback from "@/components/fallback/HomeFallback";
 
 export const metadata: Metadata = {
@@ -15,11 +17,8 @@ export const metadata: Metadata = {
 
 export const revalidate = 60;
 
-// Using HomeFallback directly while Storyblok schemas are being updated
-// to match new component props. Once schemas are updated, switch back to:
-//   const story = await fetchStory("home");
-//   if (!story) return <HomeFallback />;
-//   return <StoryblokPage story={story} />;
 export default async function HomePage() {
-  return <HomeFallback />;
+  const story = await fetchStory("home");
+  if (!story) return <HomeFallback />;
+  return <StoryblokPage story={story} />;
 }

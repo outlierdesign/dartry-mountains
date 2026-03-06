@@ -58,29 +58,63 @@ export default function StoryblokPage({ story: initialStory }: StoryblokPageProp
   );
 }
 
+/** Fields that should be split from newline-delimited strings into arrays */
+const NEWLINE_ARRAY_FIELDS = new Set(["bullets", "facts"]);
+
+/** Fields that are numeric */
+const NUMERIC_FIELDS = new Set(["center_lat", "center_lng", "zoom", "overlay_opacity"]);
+
+/**
+ * Transform a single field value from Storyblok format to component prop format.
+ */
+function transformValue(key: string, value: any): any {
+  // Skip Storyblok internal fields
+  if (key === "_editable") return undefined;
+
+  // Newline-delimited strings → arrays
+  if (NEWLINE_ARRAY_FIELDS.has(key) && typeof value === "string") {
+    return value.split("\n").filter(Boolean);
+  }
+
+  // Numeric fields
+  if (NUMERIC_FIELDS.has(key)) {
+    return Number(value) || undefined;
+  }
+
+  // Image/asset objects (pass through)
+  if (key === "image" && value && typeof value === "object" && value.filename) {
+    return value;
+  }
+
+  // Nested bloks array — transform each child recursively
+  if (Array.isArray(value) && value.length > 0 && value[0]?.component) {
+    return value.map((child: BlokData) => {
+      const { component: _c, _uid: _u, _editable: _e, ...childRest } = child;
+      const transformed: Record<string, any> = {};
+      for (const [ck, cv] of Object.entries(childRest)) {
+        const tv = transformValue(ck, cv);
+        if (tv !== undefined) transformed[ck] = tv;
+      }
+      return transformed;
+    });
+  }
+
+  return value;
+}
+
 /**
  * Transform Storyblok blok data into component props.
- * Handles nested bloks (stats, partners, items, milestones) by
- * converting them from Storyblok's blok format to the prop format
- * expected by each React component.
+ * Handles nested bloks, newline-delimited arrays, numeric fields,
+ * and strips Storyblok internal metadata.
  */
 function transformBlokProps(blok: BlokData): Record<string, any> {
-  const { component, _uid, ...rest } = blok;
+  const { component, _uid, _editable, ...rest } = blok;
   const props: Record<string, any> = {};
 
   for (const [key, value] of Object.entries(rest)) {
-    if (Array.isArray(value) && value.length > 0 && value[0]?.component) {
-      // Nested bloks array — transform each child
-      props[key] = value.map((child: BlokData) => {
-        const { component: _c, _uid: _u, ...childRest } = child;
-        return childRest;
-      });
-    } else if (key === "center_lat" || key === "center_lng" || key === "zoom") {
-      props[key] = Number(value) || undefined;
-    } else if (key === "image" && value && typeof value === "object" && value.filename) {
-      props[key] = value;
-    } else {
-      props[key] = value;
+    const transformed = transformValue(key, value);
+    if (transformed !== undefined) {
+      props[key] = transformed;
     }
   }
 
