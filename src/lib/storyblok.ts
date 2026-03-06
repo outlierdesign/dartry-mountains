@@ -60,6 +60,7 @@ storyblokInit({
   accessToken: process.env.NEXT_PUBLIC_STORYBLOK_ACCESS_TOKEN,
   use: [apiPlugin],
   components,
+  bridge: false, // Disabled globally; enabled selectively in StoryblokPage when inside the visual editor
 });
 
 /**
