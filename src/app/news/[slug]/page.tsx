@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { fetchStory } from "@/lib/storyblok";
-import { render } from "storyblok-rich-text-react-renderer";
+import RichTextRenderer from "@/components/shared/RichTextRenderer";
 
 export const revalidate = 60;
 
@@ -77,13 +77,11 @@ export default async function NewsArticlePage({
   const publishDate =
     story.first_published_at || story.created_at || new Date().toISOString();
 
-  // Article JSON-LD structured data
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: story.name,
-    description:
-      story.content?.excerpt || story.content?.description || "",
+    description: story.content?.excerpt || story.content?.description || "",
     image: story.content?.image?.filename || "",
     datePublished: publishDate,
     dateModified: story.updated_at || publishDate,
@@ -109,7 +107,6 @@ export default async function NewsArticlePage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
 
-      {/* Header Section */}
       <section className="section-cream section-padding pt-32">
         <div className="container-narrow">
           <div className="mb-4">
@@ -130,7 +127,6 @@ export default async function NewsArticlePage({
         </div>
       </section>
 
-      {/* Featured Image */}
       {story.content?.image?.filename && (
         <section className="section-light">
           <div className="container-wide">
@@ -147,12 +143,11 @@ export default async function NewsArticlePage({
         </section>
       )}
 
-      {/* Article Content */}
       <section className="section-light section-padding">
         <div className="container-narrow">
           <article className="prose-dartry">
             {story.content?.body && typeof story.content.body === "object" ? (
-              <div className="rich-text-content">{render(story.content.body)}</div>
+              <RichTextRenderer content={story.content.body} />
             ) : story.content?.body && typeof story.content.body === "string" ? (
               <div>
                 {story.content.body.split("\n\n").map((p: string, i: number) => (
@@ -166,11 +161,13 @@ export default async function NewsArticlePage({
             )}
           </article>
 
-          {/* Tags */}
-          {story.content?.tags && story.content.tags.length > 0 && (
+          {story.content?.tags && (
             <div className="mt-12 pt-8 border-t border-stone-200">
               <div className="flex flex-wrap gap-2">
-                {story.content.tags.map((tag: string, index: number) => (
+                {(typeof story.content.tags === "string"
+                  ? story.content.tags.split(",").map((t: string) => t.trim())
+                  : story.content.tags
+                ).map((tag: string, index: number) => (
                   <span
                     key={index}
                     className="inline-block px-3 py-1 text-xs font-medium bg-moss-100 text-moss-700 rounded-full"
@@ -182,7 +179,6 @@ export default async function NewsArticlePage({
             </div>
           )}
 
-          {/* Back Link */}
           <div className="mt-12 pt-8 border-t border-stone-200">
             <Link
               href="/news"
