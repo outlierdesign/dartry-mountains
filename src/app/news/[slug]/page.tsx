@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { fetchStory } from "@/lib/storyblok";
+import { render } from "storyblok-rich-text-react-renderer";
 
 export const revalidate = 60;
 
@@ -14,27 +15,27 @@ export async function generateMetadata({
   params: Promise<PageParams>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const story = await fetchStory(`news/${slug}`);
+  const story = await fetchStory('news/' + slug);
 
   if (!story) {
-    return {
-      title: "Article not found | Dartry Mountains",
-    };
+    return { title: "Article not found | Dartry Mountains" };
   }
 
+  const description =
+    story.content?.excerpt ||
+    story.content?.description ||
+    "Read this article about conservation and responsible tourism in the Dartry Mountains.";
+
   return {
-    title: `${story.name} | Dartry Mountains`,
-    description:
-      story.content?.excerpt ||
-      story.content?.description ||
-      "Read this article about the Dartry Mountains.",
+    title: story.name,
+    description,
     openGraph: {
-      title: story.name,
-      description:
-        story.content?.excerpt ||
-        story.content?.description ||
-        "Read this article about the Dartry Mountains.",
+      title: story.name + " | Dartry Mountains",
+      description,
       type: "article",
+      publishedTime: story.first_published_at || story.created_at,
+      authors: story.content?.author ? [story.content.author] : undefined,
+      url: 'https://dartrymountains.ie/news/' + slug,
       images: story.content?.image?.filename
         ? [
             {
@@ -45,6 +46,9 @@ export async function generateMetadata({
             },
           ]
         : undefined,
+    },
+    alternates: {
+      canonical: 'https://dartrymountains.ie/news/' + slug,
     },
   };
 }
@@ -64,7 +68,7 @@ export default async function NewsArticlePage({
   params: Promise<PageParams>;
 }) {
   const { slug } = await params;
-  const story = await fetchStory(`news/${slug}`);
+  const story = await fetchStory('news/' + slug);
 
   if (!story) {
     notFound();
@@ -73,14 +77,50 @@ export default async function NewsArticlePage({
   const publishDate =
     story.first_published_at || story.created_at || new Date().toISOString();
 
+  // Article JSON-LD structured data
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: story.name,
+    description:
+      story.content?.excerpt || story.content?.description || "",
+    image: story.content?.image?.filename || "",
+    datePublished: publishDate,
+    dateModified: story.updated_at || publishDate,
+    author: {
+      "@type": "Organization",
+      name: story.content?.author || "Dartry Mountains Conservation",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Dartry Mountains",
+      url: "https://dartrymountains.ie",
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": 'https://dartrymountains.ie/news/' + slug,
+    },
+  };
+
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+
       {/* Header Section */}
-      <section className="section-cream section-padding">
+      <section className="section-cream section-padding pt-32">
         <div className="container-narrow">
           <div className="mb-4">
-            <p className="label-eyebrow">{formatDate(publishDate)}</p>
+            <Link
+              href="/news"
+              className="text-sm text-moss-600 hover:text-moss-700 font-medium transition-colors"
+            >
+              ← Back to News
+            </Link>
           </div>
+          <p className="label-eyebrow mb-4">{formatDate(publishDate)}</p>
           <h1 className="heading-display">{story.name}</h1>
           {story.content?.author && (
             <p className="text-muted-foreground mt-4">
@@ -111,17 +151,18 @@ export default async function NewsArticlePage({
       <section className="section-light section-padding">
         <div className="container-narrow">
           <article className="prose-dartry">
-            <p className="text-foreground">
-              Article content will be loaded from CMS.
-            </p>
-            {story.content?.body && (
-              <div className="mt-8 text-foreground">
-                <p>
-                  {typeof story.content.body === "string"
-                    ? story.content.body
-                    : JSON.stringify(story.content.body)}
-                </p>
+            {story.content?.body && typeof story.content.body === "object" ? (
+              <div className="rich-text-content">{render(story.content.body)}</div>
+            ) : story.content?.body && typeof story.content.body === "string" ? (
+              <div>
+                {story.content.body.split("\n\n").map((p: string, i: number) => (
+                  <p key={i}>{p}</p>
+                ))}
               </div>
+            ) : (
+              <p className="text-muted-foreground italic">
+                This article is being prepared. Check back soon.
+              </p>
             )}
           </article>
 

@@ -6,13 +6,14 @@ import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navigation = [
-  { label: "Overview", href: "#overview" },
-  { label: "Protected Areas", href: "#protected-areas" },
-  { label: "Habitats", href: "#habitats" },
-  { label: "Species", href: "#species" },
-  { label: "Farming", href: "#farming" },
-  { label: "Map", href: "#map" },
-  { label: "Visit Responsibly", href: "#visit" },
+  { label: "Overview", href: "/#overview" },
+  { label: "Protected Areas", href: "/#protected-areas" },
+  { label: "Habitats", href: "/#habitats" },
+  { label: "Species", href: "/#species" },
+  { label: "Farming", href: "/#farming" },
+  { label: "Map", href: "/#map" },
+  { label: "Visit Responsibly", href: "/#visit" },
+  { label: "News", href: "/news" },
 ];
 
 export default function Header() {
@@ -33,7 +34,9 @@ export default function Header() {
     } else {
       document.body.style.overflow = "";
     }
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [isMobileMenuOpen]);
 
   return (
@@ -45,7 +48,7 @@ export default function Header() {
           : "bg-transparent py-5"
       )}
     >
-      <nav className="container-content flex items-center justify-between">
+      <nav className="container-content flex items-center justify-between" aria-label="Main navigation">
         {/* Logo */}
         <Link
           href="/"
@@ -126,7 +129,9 @@ export default function Header() {
                   : "opacity-0 translate-x-4"
               )}
               style={{
-                transitionDelay: isMobileMenuOpen ? `${idx * 50 + 200}ms` : "0ms",
+                transitionDelay: isMobileMenuOpen
+                  ? (idx * 50 + 200).toString() + "ms"
+                  : "0ms",
               }}
             >
               {item.label}

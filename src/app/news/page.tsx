@@ -4,18 +4,31 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "News & Updates | Dartry Mountains",
+  title: "News & Conservation Updates",
   description:
-    "Latest news and conservation updates about the Dartry Mountains, a Special Protection Area in Sligo and Leitrim, Ireland.",
+    "Latest news, conservation updates and stories from the Dartry Mountains. Follow chough monitoring, habitat restoration, farming partnerships, and responsible tourism initiatives in this Special Protection Area.",
+  keywords: [
+    "Dartry Mountains news",
+    "conservation updates Ireland",
+    "chough monitoring",
+    "habitat restoration Sligo",
+    "hill farming conservation",
+    "responsible tourism news",
+    "Benbulben updates",
+  ],
   openGraph: {
-    title: "News & Updates | Dartry Mountains",
+    title: "News & Conservation Updates | Dartry Mountains",
     description:
-      "Latest news and conservation updates about the Dartry Mountains",
+      "Latest conservation news and stories from the Dartry Mountains SPA and SAC.",
     type: "website",
+    url: "https://dartrymountains.ie/news",
+  },
+  alternates: {
+    canonical: "https://dartrymountains.ie/news",
   },
 };
 
-export const revalidate = 60; // ISR: revalidate every 60 seconds
+export const revalidate = 60;
 
 async function fetchBlogPosts() {
   const token = process.env.NEXT_PUBLIC_STORYBLOK_ACCESS_TOKEN;
@@ -50,12 +63,15 @@ export default async function NewsPage() {
   return (
     <main>
       {/* Header Section */}
-      <section className="section-cream section-padding">
+      <section className="section-cream section-padding pt-32">
         <div className="container-content">
           <div className="mb-4">
             <p className="label-eyebrow">Latest from the Dartry Mountains</p>
           </div>
-          <h1 className="heading-section">News & Updates</h1>
+          <h1 className="heading-section">News & Conservation Updates</h1>
+          <p className="mt-4 text-sm text-stone-500 max-w-2xl leading-relaxed">
+            Follow conservation efforts, habitat restoration, farming partnerships, and responsible tourism initiatives across the Dartry Mountains.
+          </p>
         </div>
       </section>
 
@@ -67,7 +83,7 @@ export default async function NewsPage() {
               {stories.map((story: any) => (
                 <Link
                   key={story.uuid}
-                  href={`/news/${story.slug}`}
+                  href={'/news/' + story.slug}
                   className="card-rounded group"
                 >
                   <article className="h-full flex flex-col bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition-all">

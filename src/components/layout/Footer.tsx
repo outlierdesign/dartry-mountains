@@ -2,22 +2,39 @@ import Link from "next/link";
 
 const footerLinks = {
   explore: [
-    { label: "Overview", href: "#overview" },
-    { label: "Protected Areas", href: "#protected-areas" },
-    { label: "Habitats", href: "#habitats" },
-    { label: "Species", href: "#species" },
+    { label: "Overview", href: "/#overview" },
+    { label: "Protected Areas", href: "/#protected-areas" },
+    { label: "Habitats", href: "/#habitats" },
+    { label: "Species", href: "/#species" },
   ],
   visit: [
-    { label: "Interactive Map", href: "#map" },
-    { label: "Farming", href: "#farming" },
-    { label: "Visit Responsibly", href: "#visit" },
-    { label: "Leave No Trace", href: "https://www.leavenotraceireland.org/", external: true },
+    { label: "Interactive Map", href: "/#map" },
+    { label: "Farming", href: "/#farming" },
+    { label: "Visit Responsibly", href: "/#visit" },
+    { label: "News", href: "/news" },
+    {
+      label: "Leave No Trace",
+      href: "https://www.leavenotraceireland.org/",
+      external: true,
+    },
   ],
   resources: [
-    { label: "BirdWatch Ireland", href: "https://birdwatchireland.ie", external: true },
+    {
+      label: "BirdWatch Ireland",
+      href: "https://birdwatchireland.ie",
+      external: true,
+    },
     { label: "NPWS", href: "https://www.npws.ie", external: true },
-    { label: "Wildflowers of Ireland", href: "https://www.wildflowersofireland.net", external: true },
-    { label: "Information Signs", href: "#resources" },
+    {
+      label: "Wildflowers of Ireland",
+      href: "https://www.wildflowersofireland.net",
+      external: true,
+    },
+    {
+      label: "Sustainable Tourism Ireland",
+      href: "https://www.sustainabletourismnetwork.ie/",
+      external: true,
+    },
   ],
 };
 
@@ -25,7 +42,7 @@ const partners = ["NPWS", "Sligo County Council", "Leitrim County Council"];
 
 export default function Footer() {
   return (
-    <footer className="bg-forest-darkest text-white/80">
+    <footer className="bg-forest-darkest text-white/80" role="contentinfo">
       {/* Main Footer */}
       <div className="container-content py-16 md:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
@@ -36,7 +53,10 @@ export default function Footer() {
             </h3>
             <p className="text-sm leading-relaxed text-white/50 max-w-xs">
               Preserving and celebrating one of Ireland&apos;s most iconic and
-              ecologically important mountain ranges for future generations.
+              ecologically important mountain ranges. A Special Protection Area
+              and Special Area of Conservation supporting protected chough and
+              peregrine falcon populations, rare habitats, and generations of
+              hill farming.
             </p>
           </div>
 
@@ -127,7 +147,8 @@ export default function Footer() {
       <div className="border-t border-white/10">
         <div className="container-content py-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs text-white/30">
-            © {new Date().getFullYear()} dartrymountains.ie — All rights reserved
+            © {new Date().getFullYear()} dartrymountains.ie — All rights
+            reserved
           </p>
           <div className="flex items-center gap-6">
             {partners.map((partner) => (

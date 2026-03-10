@@ -14,11 +14,13 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.34.3",
+    "lightningcss": "^1.31.1",
     "lucide-react": "^0.575.0",
     "mapbox-gl": "^3.19.0",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "storyblok-rich-text-react-renderer": "^3.0.1",
     "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {

@@ -1,0 +1,11 @@
+# Dartry Mountains — dartrymountains.ie
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://dartrymountains.ie/sitemap.xml
+
+# Disallow admin/preview paths
+Disallow: /api/
+Disallow: /_next/
+Disallow: /*?_storyblok*
