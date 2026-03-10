@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import { getStoryblokApi } from "@storyblok/react/rsc";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -35,12 +34,11 @@ async function fetchBlogPosts() {
   if (!token) return [];
 
   try {
-    const storyblokApi = getStoryblokApi();
-    const { data } = await storyblokApi.get("cdn/stories", {
-      version: "draft",
-      starts_with: "news/",
-      sort_by: "first_published_at:desc",
-    });
+    const res = await fetch(
+      'https://api.storyblok.com/v2/cdn/stories?starts_with=news/&sort_by=first_published_at:desc&token=' + token + '&version=draft',
+      { next: { revalidate: 60 } }
+    );
+    const data = await res.json();
     return data?.stories ?? [];
   } catch (e) {
     console.warn("Failed to fetch blog posts:", e);
