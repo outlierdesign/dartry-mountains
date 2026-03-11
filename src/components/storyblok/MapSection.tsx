@@ -27,8 +27,6 @@ interface MapSectionProps {
   center_lat?: number;
   center_lng?: number;
   zoom?: number;
-  show_spa_boundary?: boolean;
-  show_sac_boundary?: boolean;
   background_color?: string;
   spacing?: "compact" | "normal" | "spacious";
 }
@@ -36,11 +34,9 @@ interface MapSectionProps {
 export default function MapSection({
   heading,
   description,
-  center_lat = 54.3833,
-  center_lng = -8.3667,
+  center_lat = 54.37,
+  center_lng = -8.35,
   zoom = 11,
-  show_spa_boundary = true,
-  show_sac_boundary = true,
   background_color = "bg-cream",
   spacing = "normal",
 }: MapSectionProps) {
@@ -73,8 +69,6 @@ export default function MapSection({
             centerLat={center_lat}
             centerLng={center_lng}
             zoom={zoom}
-            showSpaBoundary={show_spa_boundary}
-            showSacBoundary={show_sac_boundary}
           />
         </div>
       </div>

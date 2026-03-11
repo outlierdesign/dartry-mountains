@@ -1,46 +1,74 @@
 "use client"
+import { useEffect, useRef, useState, useCallback } from "react"
 
-import { useEffect, useRef, useState } from "react"
+interface LayerConfig {
+  id: string
+  label: string
+  designation: string
+  geoJsonUrl: string
+  fillColor: string
+  fillOpacity: number
+  lineColor: string
+  lineWidth: number
+  lineDasharray?: number[]
+  visible: boolean
+}
 
 interface InteractiveMapProps {
   centerLat?: number
   centerLng?: number
   zoom?: number
-  showSpaBoundary?: boolean
-  showSacBoundary?: boolean
 }
 
-// Approximate SPA boundary polygon (Dartry Mountains SPA)
-const SPA_BOUNDARY: GeoJSON.Feature = {
-  type: "Feature",
-  properties: { name: "Dartry Mountains SPA", designation: "Special Protection Area" },
-  geometry: {
-    type: "Polygon",
-    coordinates: [[
-      [-8.45, 54.35], [-8.42, 54.33], [-8.38, 54.32], [-8.33, 54.33],
-      [-8.30, 54.35], [-8.28, 54.38], [-8.29, 54.41], [-8.32, 54.43],
-      [-8.36, 54.44], [-8.40, 54.43], [-8.43, 54.41], [-8.45, 54.38],
-      [-8.45, 54.35],
-    ]],
+const LAYER_CONFIGS: LayerConfig[] = [
+  {
+    id: "ben-bulben-sac",
+    label: "Ben Bulben, Gleniff & Glenade Complex SAC",
+    designation: "SAC",
+    geoJsonUrl: "/geo/ben-bulben-sac.json",
+    fillColor: "#2563EB",
+    fillOpacity: 0.15,
+    lineColor: "#1E40AF",
+    lineWidth: 2.5,
+    visible: true,
   },
-}
-
-// Ben Bulben, Gleniff and Glenade Complex SAC
-const SAC_BOUNDARY: GeoJSON.Feature = {
-  type: "Feature",
-  properties: { name: "Ben Bulben, Gleniff and Glenade Complex SAC", designation: "Special Area of Conservation" },
-  geometry: {
-    type: "Polygon",
-    coordinates: [[
-      [-8.46, 54.34], [-8.43, 54.31], [-8.37, 54.30], [-8.31, 54.32],
-      [-8.27, 54.35], [-8.26, 54.39], [-8.27, 54.42], [-8.31, 54.45],
-      [-8.37, 54.46], [-8.42, 54.44], [-8.45, 54.41], [-8.47, 54.37],
-      [-8.46, 54.34],
-    ]],
+  {
+    id: "arroo-mountain-sac",
+    label: "Arroo Mountain SAC",
+    designation: "SAC",
+    geoJsonUrl: "/geo/arroo-mountain-sac.json",
+    fillColor: "#2563EB",
+    fillOpacity: 0.15,
+    lineColor: "#1E40AF",
+    lineWidth: 2.5,
+    visible: true,
   },
-}
+  {
+    id: "sligo-leitrim-spa",
+    label: "Sligo/Leitrim Uplands SPA",
+    designation: "SPA",
+    geoJsonUrl: "/geo/sligo-leitrim-spa.json",
+    fillColor: "#9333EA",
+    fillOpacity: 0.15,
+    lineColor: "#7E22CE",
+    lineWidth: 2.5,
+    lineDasharray: [4, 3],
+    visible: true,
+  },
+  {
+    id: "dartry-uplands",
+    label: "Dartry Uplands (150m)",
+    designation: "Uplands",
+    geoJsonUrl: "/geo/dartry-uplands.json",
+    fillColor: "#65A30D",
+    fillOpacity: 0.08,
+    lineColor: "#4D7C0F",
+    lineWidth: 2,
+    lineDasharray: [6, 4],
+    visible: false,
+  },
+]
 
-// Load Mapbox GL CSS via <link> tag in document head
 function loadMapboxCSS() {
   if (typeof document === "undefined") return
   const id = "mapbox-gl-css"
@@ -53,44 +81,52 @@ function loadMapboxCSS() {
 }
 
 export default function InteractiveMap({
-  centerLat = 54.3833,
-  centerLng = -8.3667,
+  centerLat = 54.37,
+  centerLng = -8.35,
   zoom = 11,
-  showSpaBoundary = true,
-  showSacBoundary = true,
 }: InteractiveMapProps) {
   const mapContainer = useRef<HTMLDivElement>(null)
   const mapRef = useRef<any>(null)
   const [mapLoaded, setMapLoaded] = useState(false)
   const [noToken, setNoToken] = useState(false)
-  const [spaVisible, setSpaVisible] = useState(true)
-  const [sacVisible, setSacVisible] = useState(true)
+  const [layers, setLayers] = useState<LayerConfig[]>(LAYER_CONFIGS)
+  const [legendOpen, setLegendOpen] = useState(true)
+
+  const toggleLayer = useCallback(
+    (layerId: string) => {
+      const map = mapRef.current
+      if (!map) return
+      setLayers((prev) =>
+        prev.map((l) => {
+          if (l.id !== layerId) return l
+          const next = !l.visible
+          const vis = next ? "visible" : "none"
+          try { map.setLayoutProperty(l.id + "-fill", "visibility", vis) } catch {}
+          try { map.setLayoutProperty(l.id + "-outline", "visibility", vis) } catch {}
+          return { ...l, visible: next }
+        })
+      )
+    },
+    []
+  )
 
   useEffect(() => {
     if (!mapContainer.current || mapRef.current) return
-
     const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
     if (!token) {
-      console.warn("Mapbox token not configured")
       setNoToken(true)
       return
     }
-
-    // Load the CSS first
     loadMapboxCSS()
-
     let isMounted = true
 
     async function initMap() {
       const mapboxgl = (await import("mapbox-gl")).default
-
       if (!isMounted || !mapContainer.current) return
-
       mapboxgl.accessToken = token!
 
       const map = new mapboxgl.Map({
         container: mapContainer.current,
-        // Outdoors base with 3D terrain overlay for mountain topography
         style: "mapbox://styles/mapbox/satellite-streets-v12",
         center: [centerLng, centerLat],
         zoom,
@@ -102,14 +138,13 @@ export default function InteractiveMap({
       })
 
       mapRef.current = map
-
       map.addControl(new mapboxgl.NavigationControl(), "top-right")
       map.addControl(new mapboxgl.FullscreenControl(), "top-right")
 
-      map.on("load", () => {
+      map.on("load", async () => {
         if (!isMounted || !map) return
 
-        // Add 3D terrain from Mapbox DEM
+        // 3D terrain
         try {
           if (!map.getSource("mapbox-dem")) {
             map.addSource("mapbox-dem", {
@@ -121,10 +156,10 @@ export default function InteractiveMap({
           }
           map.setTerrain({ source: "mapbox-dem", exaggeration: 1.5 })
         } catch (e) {
-          console.warn("Terrain already configured by style:", e)
+          console.warn("Terrain error:", e)
         }
 
-        // Add sky layer for atmospheric effect
+        // Sky atmosphere
         try {
           if (!map.getLayer("sky")) {
             map.addLayer({
@@ -138,60 +173,103 @@ export default function InteractiveMap({
             })
           }
         } catch (e) {
-          console.warn("Sky layer already configured by style:", e)
+          console.warn("Sky error:", e)
         }
 
-        // Add SPA boundary
-        if (showSpaBoundary) {
-          map.addSource("spa-boundary", {
-            type: "geojson",
-            data: SPA_BOUNDARY,
-          })
-          map.addLayer({
-            id: "spa-fill",
-            type: "fill",
-            source: "spa-boundary",
-            paint: {
-              "fill-color": "#4ADE80",
-              "fill-opacity": 0.15,
-            },
-          })
-          map.addLayer({
-            id: "spa-outline",
-            type: "line",
-            source: "spa-boundary",
-            paint: {
-              "line-color": "#4ADE80",
-              "line-width": 2.5,
-              "line-dasharray": [2, 2],
-            },
-          })
-        }
+        // Load all GeoJSON layers
+        for (const layer of LAYER_CONFIGS) {
+          try {
+            const response = await fetch(layer.geoJsonUrl)
+            const data = await response.json()
 
-        // Add SAC boundary
-        if (showSacBoundary) {
-          map.addSource("sac-boundary", {
-            type: "geojson",
-            data: SAC_BOUNDARY,
-          })
-          map.addLayer({
-            id: "sac-fill",
-            type: "fill",
-            source: "sac-boundary",
-            paint: {
-              "fill-color": "#FBBF24",
-              "fill-opacity": 0.12,
-            },
-          })
-          map.addLayer({
-            id: "sac-outline",
-            type: "line",
-            source: "sac-boundary",
-            paint: {
-              "line-color": "#FBBF24",
-              "line-width": 2.5,
-            },
-          })
+            map.addSource(layer.id, { type: "geojson", data })
+
+            // Fill layer
+            map.addLayer({
+              id: layer.id + "-fill",
+              type: "fill",
+              source: layer.id,
+              paint: {
+                "fill-color": layer.fillColor,
+                "fill-opacity": layer.fillOpacity,
+              },
+              layout: {
+                visibility: layer.visible ? "visible" : "none",
+              },
+            })
+
+            // Outline layer
+            const linePaint: Record<string, unknown> = {
+              "line-color": layer.lineColor,
+              "line-width": layer.lineWidth,
+            }
+            if (layer.lineDasharray) {
+              linePaint["line-dasharray"] = layer.lineDasharray
+            }
+
+            map.addLayer({
+              id: layer.id + "-outline",
+              type: "line",
+              source: layer.id,
+              paint: linePaint,
+              layout: {
+                visibility: layer.visible ? "visible" : "none",
+              },
+            })
+
+            // Hover cursor
+            map.on("mouseenter", layer.id + "-fill", () => {
+              map.getCanvas().style.cursor = "pointer"
+            })
+            map.on("mouseleave", layer.id + "-fill", () => {
+              map.getCanvas().style.cursor = ""
+            })
+
+            // Click popup with site info
+            map.on("click", layer.id + "-fill", (e: any) => {
+              const props = e.features?.[0]?.properties
+              if (!props) return
+
+              const name = props.SITE_NAME || props.Range || layer.label
+              const designation = props.designation || layer.designation
+              const ha = props.HA ? parseFloat(props.HA).toFixed(0) + " ha" : ""
+              const url = props.URL || ""
+
+              let badge = ""
+              if (designation === "SAC") {
+                badge = "background:#DBEAFE;color:#1E40AF;"
+              } else if (designation === "SPA") {
+                badge = "background:#F3E8FF;color:#7E22CE;"
+              } else {
+                badge = "background:#ECFCCB;color:#4D7C0F;"
+              }
+
+              let html = '<div style="font-family:system-ui;max-width:260px;">'
+              html +=
+                '<p style="font-weight:700;margin:0 0 4px;font-size:14px;color:#1a1a1a;">' +
+                name +
+                "</p>"
+              html += '<p style="margin:0 0 4px;font-size:12px;color:#666;">'
+              html +=
+                '<span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:11px;font-weight:600;' +
+                badge +
+                '">'
+              html += designation + "</span>"
+              if (ha) html += " &middot; " + ha
+              html += "</p>"
+              if (url) {
+                html +=
+                  '<a href="' +
+                  url +
+                  '" target="_blank" rel="noopener" style="font-size:11px;color:#2563EB;">View on NPWS &rarr;</a>'
+              }
+              html += "</div>"
+
+              new mapboxgl.Popup({ offset: 10 }).setLngLat(e.lngLat).setHTML(html).addTo(map)
+            })
+          } catch (err) {
+            console.warn("Failed to load layer " + layer.id + ":", err)
+          }
         }
 
         setMapLoaded(true)
@@ -199,7 +277,6 @@ export default function InteractiveMap({
     }
 
     initMap()
-
     return () => {
       isMounted = false
       if (mapRef.current) {
@@ -207,49 +284,87 @@ export default function InteractiveMap({
         mapRef.current = null
       }
     }
-  }, [centerLat, centerLng, zoom, showSpaBoundary, showSacBoundary])
+  }, [centerLat, centerLng, zoom])
+
+  const designationGroups = [
+    { key: "SAC", title: "Special Areas of Conservation" },
+    { key: "SPA", title: "Special Protection Areas" },
+    { key: "Uplands", title: "Upland Boundaries" },
+  ]
 
   return (
     <div className="relative w-full h-[500px] md:h-[600px]">
       <div ref={mapContainer} className="w-full h-full rounded-lg" />
 
-      {/* Legend with toggles */}
+      {/* Legend panel with layer toggles */}
       {mapLoaded && (
-        <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg p-3 shadow-md text-xs z-10">
-          <p className="font-semibold text-stone-800 mb-2">Legend</p>
-          {showSpaBoundary && (
-            <button
-              onClick={() => {
-                const map = mapRef.current
-                if (!map) return
-                const next = !spaVisible
-                setSpaVisible(next)
-                const vis = next ? "visible" : "none"
-                try { map.setLayoutProperty("spa-fill", "visibility", vis) } catch {}
-                try { map.setLayoutProperty("spa-outline", "visibility", vis) } catch {}
-              }}
-              className="flex items-center gap-2 mb-1.5 w-full hover:bg-stone-100 rounded px-1 py-0.5 transition-colors"
+        <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg text-xs z-10 max-w-[280px]">
+          <button
+            onClick={() => setLegendOpen(!legendOpen)}
+            className="flex items-center justify-between w-full px-3 py-2.5 hover:bg-stone-50 rounded-t-lg transition-colors"
+          >
+            <span className="font-semibold text-stone-800 text-[13px]">Protected Areas</span>
+            <svg
+              className={`w-4 h-4 text-stone-400 transition-transform ${
+                legendOpen ? "rotate-180" : ""
+              }`}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
             >
-              <div className={`w-4 h-3 rounded-sm border-2 border-dashed transition-opacity ${spaVisible ? '' : 'opacity-30'}`} style={{ borderColor: "#4ADE80", backgroundColor: "rgba(74,222,128,0.15)" }} />
-              <span className={`transition-opacity ${spaVisible ? 'text-stone-600' : 'text-stone-400 line-through'}`}>SPA Boundary</span>
-            </button>
-          )}
-          {showSacBoundary && (
-            <button
-              onClick={() => {
-                const map = mapRef.current
-                if (!map) return
-                const next = !sacVisible
-                setSacVisible(next)
-                const vis = next ? "visible" : "none"
-                try { map.setLayoutProperty("sac-fill", "visibility", vis) } catch {}
-                try { map.setLayoutProperty("sac-outline", "visibility", vis) } catch {}
-              }}
-              className="flex items-center gap-2 w-full hover:bg-stone-100 rounded px-1 py-0.5 transition-colors"
-            >
-              <div className={`w-4 h-3 rounded-sm border-2 transition-opacity ${sacVisible ? '' : 'opacity-30'}`} style={{ borderColor: "#FBBF24", backgroundColor: "rgba(251,191,36,0.12)" }} />
-              <span className={`transition-opacity ${sacVisible ? 'text-stone-600' : 'text-stone-400 line-through'}`}>SAC Boundary</span>
-            </button>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </button>
+
+          {legendOpen && (
+            <div className="px-3 pb-3 space-y-1 border-t border-stone-100">
+              {designationGroups.map((group) => {
+                const groupLayers = layers.filter((l) => l.designation === group.key)
+                if (groupLayers.length === 0) return null
+                return (
+                  <div key={group.key}>
+                    <p className="text-[10px] font-medium text-stone-400 uppercase tracking-wider pt-2 pb-0.5">
+                      {group.title}
+                    </p>
+                    {groupLayers.map((layer) => (
+                      <button
+                        key={layer.id}
+                        onClick={() => toggleLayer(layer.id)}
+                        className="flex items-center gap-2 w-full hover:bg-stone-50 rounded px-1.5 py-1 transition-colors text-left"
+                      >
+                        <div
+                          className={`w-4 h-3 rounded-sm flex-shrink-0 transition-opacity ${
+                            layer.visible ? "" : "opacity-25"
+                          }`}
+                          style={{
+                            borderWidth: 2,
+                            borderStyle: layer.lineDasharray ? "dashed" : "solid",
+                            borderColor: layer.lineColor,
+                            backgroundColor: layer.visible
+                              ? layer.fillColor + "26"
+                              : "transparent",
+                          }}
+                        />
+                        <span
+                          className={`leading-tight transition-opacity ${
+                            layer.visible
+                              ? "text-stone-600"
+                              : "text-stone-400 line-through"
+                          }`}
+                        >
+                          {layer.label}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                )
+              })}
+            </div>
           )}
         </div>
       )}
@@ -258,11 +373,23 @@ export default function InteractiveMap({
       {noToken && (
         <div className="absolute inset-0 flex items-center justify-center bg-stone-100 rounded-lg">
           <div className="text-center px-6">
-            <svg className="w-12 h-12 mx-auto mb-4 text-stone-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+            <svg
+              className="w-12 h-12 mx-auto mb-4 text-stone-300"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+              />
             </svg>
             <p className="text-stone-500 text-sm font-medium">3D Interactive Map</p>
-            <p className="text-stone-400 text-xs mt-1">Set NEXT_PUBLIC_MAPBOX_TOKEN to enable</p>
+            <p className="text-stone-400 text-xs mt-1">
+              Set NEXT_PUBLIC_MAPBOX_TOKEN to enable
+            </p>
           </div>
         </div>
       )}
