@@ -48,9 +48,9 @@ const LAYER_CONFIGS: LayerConfig[] = [
     label: "Sligo/Leitrim Uplands SPA",
     designation: "SPA",
     geoJsonUrl: "/geo/sligo-leitrim-spa.json",
-    fillColor: "#A855F7",
-    fillOpacity: 0.35,
-    lineColor: "#7C3AED",
+    fillColor: "#FFFFFF",
+    fillOpacity: 0.45,
+    lineColor: "#FFFFFF",
     lineWidth: 3,
     lineDasharray: [4, 3],
     visible: true,
@@ -176,6 +176,28 @@ export default function InteractiveMap({
           console.warn("Sky error:", e)
         }
 
+        // Create crosshatch pattern for SPA layer
+        const patternSize = 16
+        const canvas = document.createElement("canvas")
+        canvas.width = patternSize
+        canvas.height = patternSize
+        const ctx = canvas.getContext("2d")!
+        ctx.clearRect(0, 0, patternSize, patternSize)
+        // White diagonal lines (top-left to bottom-right)
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.7)"
+        ctx.lineWidth = 2
+        ctx.beginPath()
+        ctx.moveTo(0, 0)
+        ctx.lineTo(patternSize, patternSize)
+        ctx.moveTo(-patternSize, 0)
+        ctx.lineTo(patternSize, patternSize * 2)
+        ctx.moveTo(0, -patternSize)
+        ctx.lineTo(patternSize * 2, patternSize)
+        ctx.stroke()
+
+        const imgData = ctx.getImageData(0, 0, patternSize, patternSize)
+        map.addImage("spa-crosshatch", imgData, { sdf: false })
+
         // Load all GeoJSON layers
         for (const layer of LAYER_CONFIGS) {
           try {
@@ -184,19 +206,34 @@ export default function InteractiveMap({
 
             map.addSource(layer.id, { type: "geojson", data })
 
-            // Fill layer
-            map.addLayer({
-              id: layer.id + "-fill",
-              type: "fill",
-              source: layer.id,
-              paint: {
-                "fill-color": layer.fillColor,
-                "fill-opacity": layer.fillOpacity,
-              },
-              layout: {
-                visibility: layer.visible ? "visible" : "none",
-              },
-            })
+            // Fill layer — use crosshatch pattern for SPA, solid fill for others
+            if (layer.designation === "SPA") {
+              map.addLayer({
+                id: layer.id + "-fill",
+                type: "fill",
+                source: layer.id,
+                paint: {
+                  "fill-pattern": "spa-crosshatch",
+                  "fill-opacity": layer.fillOpacity,
+                },
+                layout: {
+                  visibility: layer.visible ? "visible" : "none",
+                },
+              })
+            } else {
+              map.addLayer({
+                id: layer.id + "-fill",
+                type: "fill",
+                source: layer.id,
+                paint: {
+                  "fill-color": layer.fillColor,
+                  "fill-opacity": layer.fillOpacity,
+                },
+                layout: {
+                  visibility: layer.visible ? "visible" : "none",
+                },
+              })
+            }
 
             // Outline layer
             const linePaint: Record<string, unknown> = {
@@ -346,8 +383,14 @@ export default function InteractiveMap({
                             borderStyle: layer.lineDasharray ? "dashed" : "solid",
                             borderColor: layer.lineColor,
                             backgroundColor: layer.visible
-                              ? layer.fillColor + "26"
+                              ? layer.designation === "SPA"
+                                ? "#e8e8e8"
+                                : layer.fillColor + "26"
                               : "transparent",
+                            backgroundImage:
+                              layer.designation === "SPA" && layer.visible
+                                ? "repeating-linear-gradient(45deg, transparent, transparent 2px, white 2px, white 4px)"
+                                : "none",
                           }}
                         />
                         <span
