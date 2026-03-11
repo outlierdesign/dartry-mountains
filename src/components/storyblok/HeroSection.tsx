@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils"
 import { ChevronDown, Play } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 
 interface ImageObject {
   filename?: string
@@ -24,6 +24,7 @@ interface HeroSectionProps {
   eyebrow?: string
   image?: ImageObject
   video_url?: string
+  video_bg?: string
   overlay_opacity?: number
   show_scroll_indicator?: boolean
   cta_label?: string
@@ -41,6 +42,7 @@ export default function HeroSection({
   eyebrow,
   image,
   video_url,
+  video_bg,
   overlay_opacity = 0.45,
   show_scroll_indicator = true,
   cta_label,
@@ -51,6 +53,14 @@ export default function HeroSection({
   padding_top = "medium",
 }: HeroSectionProps) {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    // Attempt to play the background video on mount
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {})
+    }
+  }, [])
 
   const paddingTopClasses = {
     none: "pt-0",
@@ -113,8 +123,24 @@ export default function HeroSection({
         paddingTopClasses[padding_top]
       )}
     >
-      {/* Background Image */}
-      {image?.filename && (
+      {/* Background Video (looping, muted, autoplay) */}
+      {video_bg && (
+        <video
+          ref={videoRef}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          className="absolute inset-0 w-full h-full object-cover"
+          poster={image?.filename || undefined}
+        >
+          <source src={video_bg} type="video/mp4" />
+        </video>
+      )}
+
+      {/* Background Image (fallback when no video, or poster frame) */}
+      {!video_bg && image?.filename && (
         <Image
           src={image.filename}
           alt={image.alt || ""}
@@ -125,7 +151,7 @@ export default function HeroSection({
           style={{ objectPosition: "center" }}
         />
       )}
-      {!image?.filename && (
+      {!video_bg && !image?.filename && (
         <div className="absolute inset-0 bg-gradient-to-br from-forest-dark to-moss-900" />
       )}
 
