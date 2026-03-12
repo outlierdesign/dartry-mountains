@@ -1,6 +1,7 @@
 "use client";
 
 import ScrollReveal from "@/components/shared/ScrollReveal";
+import ClientHomeGallery from "@/components/shared/ClientHomeGallery";
 import { useStoryblokState } from "@storyblok/react";
 import { components } from "@/lib/storyblok";
 
@@ -37,6 +38,9 @@ export default function StoryblokPage({ story: initialStory }: StoryblokPageProp
 
   const body = (story ?? initialStory)?.content?.body ?? [];
 
+  // Check if the CMS content already includes a gallery_grid component
+  const hasGalleryInCms = body.some((blok: BlokData) => blok.component === "gallery_grid");
+
   return (
     <main className="w-full">
       {body.map((blok: BlokData) => {
@@ -47,8 +51,19 @@ export default function StoryblokPage({ story: initialStory }: StoryblokPageProp
         }
 
         const props = transformBlokProps(blok);
+        const shouldInjectGallery =
+          blok.component === "visit_responsibly" && !hasGalleryInCms;
 
-        return (
+        return shouldInjectGallery ? (
+          <div key={blok._uid}>
+            <ScrollReveal>
+              <Component {...props} />
+            </ScrollReveal>
+            <ScrollReveal>
+              <ClientHomeGallery />
+            </ScrollReveal>
+          </div>
+        ) : (
           <ScrollReveal key={blok._uid}>
             <Component {...props} />
           </ScrollReveal>

@@ -10,7 +10,6 @@ interface LayerConfig {
   fillOpacity: number
   lineColor: string
   lineWidth: number
-  lineDasharray?: number[]
   visible: boolean
 }
 
@@ -52,7 +51,6 @@ const LAYER_CONFIGS: LayerConfig[] = [
     fillOpacity: 0.45,
     lineColor: "#FFFFFF",
     lineWidth: 3,
-    lineDasharray: [4, 3],
     visible: true,
   },
   {
@@ -64,7 +62,6 @@ const LAYER_CONFIGS: LayerConfig[] = [
     fillOpacity: 0.25,
     lineColor: "#65A30D",
     lineWidth: 2.5,
-    lineDasharray: [6, 4],
     visible: false,
   },
 ]
@@ -235,22 +232,20 @@ export default function InteractiveMap({
               })
             }
 
-            // Outline layer
-            const linePaint: Record<string, unknown> = {
-              "line-color": layer.lineColor,
-              "line-width": layer.lineWidth,
-            }
-            if (layer.lineDasharray) {
-              linePaint["line-dasharray"] = layer.lineDasharray
-            }
-
+            // Outline layer — explicitly solid lines for visibility
             map.addLayer({
               id: layer.id + "-outline",
               type: "line",
               source: layer.id,
-              paint: linePaint,
+              paint: {
+                "line-color": layer.lineColor,
+                "line-width": layer.lineWidth,
+                "line-opacity": 1,
+              },
               layout: {
                 visibility: layer.visible ? "visible" : "none",
+                "line-cap": "round",
+                "line-join": "round",
               },
             })
 
@@ -380,7 +375,7 @@ export default function InteractiveMap({
                           }`}
                           style={{
                             borderWidth: 2,
-                            borderStyle: layer.lineDasharray ? "dashed" : "solid",
+                            borderStyle: "solid",
                             borderColor: layer.lineColor,
                             backgroundColor: layer.visible
                               ? layer.designation === "SPA"
