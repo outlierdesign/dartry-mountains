@@ -22,7 +22,7 @@ export default async function HomeFallback() {
         heading="The Dartry Mountains"
         subheading="An iconic mountain range spanning the counties of Sligo and Leitrim, home to rare habitats, protected wildlife and a rich farming heritage."
         image={{ filename: "/images/landscapes/benbulben.jpg", alt: "Benbulben and the Dartry Mountains landscape" }}
-        // video_bg="https://www.youtube.com/watch?v=YOUR_VIDEO_ID" // Uncomment with actual YouTube URL for hero background
+        video_bg="https://www.youtube.com/watch?v=u0-dCpDnuXU"
         overlay_opacity={0.45}
         show_scroll_indicator={true}
         cta_label="Explore the Mountains"
