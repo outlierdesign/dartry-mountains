@@ -59,7 +59,7 @@ export default async function NewsPage() {
   const stories = await fetchBlogPosts();
 
   return (
-    <main>
+    <div>
       {/* Header Section */}
       <section className="section-cream section-padding pt-32">
         <div className="container-content">
@@ -132,6 +132,6 @@ export default async function NewsPage() {
           )}
         </div>
       </section>
-    </main>
+    </div>
   );
 }

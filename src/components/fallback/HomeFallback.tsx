@@ -15,7 +15,7 @@ import ScrollReveal from "@/components/shared/ScrollReveal"
 
 export default async function HomeFallback() {
   return (
-    <main>
+    <div>
       {/* 1. Hero Section */}
       <HeroSection
         eyebrow="Sligo & Leitrim, Ireland"
@@ -141,6 +141,6 @@ export default async function HomeFallback() {
           background="gold"
         />
       </ScrollReveal>
-    </main>
+    </div>
   )
 }

@@ -101,7 +101,7 @@ export default async function NewsArticlePage({
   };
 
   return (
-    <main>
+    <div>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
@@ -189,6 +189,6 @@ export default async function NewsArticlePage({
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

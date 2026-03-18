@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import { fetchStory, fetchAllStories } from "@/lib/storyblok";
 import StoryblokPage from "@/components/shared/StoryblokPage";
 import HomeFallback from "@/components/fallback/HomeFallback";
@@ -7,6 +8,41 @@ export const revalidate = 60;
 
 interface PageProps {
   params: Promise<{ slug: string }>;
+}
+
+/**
+ * Generate dynamic metadata for each content page.
+ */
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const story = await fetchStory(slug);
+
+  if (!story) {
+    return { title: slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()) };
+  }
+
+  const title = story.content?.seo_title || story.name || slug;
+  const description =
+    story.content?.seo_description ||
+    story.content?.description ||
+    story.content?.excerpt ||
+    `Learn about ${story.name} in the Dartry Mountains conservation area.`;
+  const image = story.content?.image?.filename || "/images/landscapes/benbulben.jpg";
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title: `${title} | Dartry Mountains`,
+      description,
+      type: "article",
+      url: `https://dartrymountains.ie/${slug}`,
+      images: [{ url: image, width: 1200, height: 630, alt: title }],
+    },
+    alternates: {
+      canonical: `https://dartrymountains.ie/${slug}`,
+    },
+  };
 }
 
 /**

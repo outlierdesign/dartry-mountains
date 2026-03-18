@@ -143,7 +143,7 @@ export default async function GalleryPage() {
         : getPlaceholderGallery();
 
   return (
-    <main>
+    <div>
       {/* Header Section */}
       <section className="section-cream pt-32 pb-12 md:pt-36 md:pb-16">
         <div className="container-content">
@@ -162,6 +162,6 @@ export default async function GalleryPage() {
       <ScrollReveal>
         <GalleryGrid images={images} />
       </ScrollReveal>
-    </main>
+    </div>
   );
 }

@@ -42,7 +42,7 @@ export default function StoryblokPage({ story: initialStory }: StoryblokPageProp
   const hasGalleryInCms = body.some((blok: BlokData) => blok.component === "gallery_grid");
 
   return (
-    <main className="w-full">
+    <div className="w-full">
       {body.map((blok: BlokData) => {
         const Component = components[blok.component];
         if (!Component) {
@@ -69,7 +69,7 @@ export default function StoryblokPage({ story: initialStory }: StoryblokPageProp
           </ScrollReveal>
         );
       })}
-    </main>
+    </div>
   );
 }
 
