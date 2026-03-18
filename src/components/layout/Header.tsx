@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -13,6 +13,7 @@ const navigation = [
   { label: "Farming", href: "/#farming" },
   { label: "Map", href: "/#map" },
   { label: "Visit Responsibly", href: "/#visit" },
+  { label: "Gallery", href: "/gallery" },
   { label: "News", href: "/news" },
 ];
 
@@ -39,6 +40,18 @@ export default function Header() {
     };
   }, [isMobileMenuOpen]);
 
+  // Close menu on Escape key
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.key === "Escape" && isMobileMenuOpen) {
+      setIsMobileMenuOpen(false);
+    }
+  }, [isMobileMenuOpen]);
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [handleKeyDown]);
+
   return (
     <header
       className={cn(
@@ -52,7 +65,7 @@ export default function Header() {
         {/* Logo */}
         <Link
           href="/"
-          className="font-display text-xl md:text-2xl font-light italic text-white transition-colors hover:text-gold-400 tracking-tight"
+          className="font-display text-xl md:text-2xl font-light italic text-white transition-colors hover:text-gold-400 tracking-tight z-50"
         >
           Dartry Mountains
         </Link>
@@ -76,43 +89,58 @@ export default function Header() {
           ))}
         </div>
 
-        {/* Mobile Menu Button */}
+        {/* Hamburger / Close Button */}
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="lg:hidden p-2 text-white hover:text-gold-400 transition-colors"
-          aria-label="Toggle menu"
+          className="lg:hidden relative z-50 p-2 text-white hover:text-gold-400 transition-colors"
+          aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
           aria-expanded={isMobileMenuOpen}
         >
-          {isMobileMenuOpen ? (
-            <X className="h-6 w-6" />
-          ) : (
-            <Menu className="h-6 w-6" />
-          )}
+          <span className="sr-only">{isMobileMenuOpen ? "Close" : "Menu"}</span>
+          <div className="relative w-6 h-5 flex flex-col justify-between">
+            <span
+              className={cn(
+                "block h-[2px] w-6 bg-current rounded-full transition-all duration-300 origin-center",
+                isMobileMenuOpen ? "rotate-45 translate-y-[9px]" : ""
+              )}
+            />
+            <span
+              className={cn(
+                "block h-[2px] w-6 bg-current rounded-full transition-all duration-200",
+                isMobileMenuOpen ? "opacity-0 scale-x-0" : "opacity-100"
+              )}
+            />
+            <span
+              className={cn(
+                "block h-[2px] w-6 bg-current rounded-full transition-all duration-300 origin-center",
+                isMobileMenuOpen ? "-rotate-45 -translate-y-[9px]" : ""
+              )}
+            />
+          </div>
         </button>
       </nav>
 
-      {/* Mobile Slide-out Panel */}
+      {/* Mobile Full-screen Overlay Menu */}
       <div
         className={cn(
-          "fixed inset-0 top-0 z-40 lg:hidden transition-all duration-500",
-          isMobileMenuOpen ? "visible" : "invisible"
+          "fixed inset-0 z-40 lg:hidden transition-all duration-400",
+          isMobileMenuOpen ? "visible" : "invisible pointer-events-none"
         )}
       >
-        {/* Backdrop */}
+        {/* Dark overlay background */}
         <div
           className={cn(
-            "absolute inset-0 bg-black/50 transition-opacity duration-500",
+            "absolute inset-0 bg-forest-dark/98 backdrop-blur-sm transition-opacity duration-400",
             isMobileMenuOpen ? "opacity-100" : "opacity-0"
           )}
           onClick={() => setIsMobileMenuOpen(false)}
         />
 
-        {/* Panel */}
+        {/* Menu content */}
         <div
           className={cn(
-            "absolute top-0 right-0 h-full w-[280px] bg-forest-dark/98 backdrop-blur-xl",
-            "flex flex-col pt-24 px-8 transition-transform duration-500 ease-out",
-            isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+            "relative h-full flex flex-col justify-center px-10 transition-all duration-500",
+            isMobileMenuOpen ? "opacity-100" : "opacity-0 translate-y-4"
           )}
         >
           {navigation.map((item, idx) => (
@@ -121,22 +149,34 @@ export default function Header() {
               href={item.href}
               onClick={() => setIsMobileMenuOpen(false)}
               className={cn(
-                "font-body text-[14px] font-medium uppercase tracking-[1.5px]",
-                "text-white/70 hover:text-gold-400 transition-all duration-300",
-                "py-4 border-b border-white/10",
+                "font-display text-2xl font-light text-white/80 hover:text-gold-400",
+                "py-3 transition-all duration-300 border-b border-white/5",
                 isMobileMenuOpen
                   ? "opacity-100 translate-x-0"
-                  : "opacity-0 translate-x-4"
+                  : "opacity-0 -translate-x-6"
               )}
               style={{
                 transitionDelay: isMobileMenuOpen
-                  ? (idx * 50 + 200).toString() + "ms"
+                  ? `${idx * 60 + 150}ms`
                   : "0ms",
               }}
             >
               {item.label}
             </Link>
           ))}
+
+          {/* Footer info in mobile menu */}
+          <div
+            className={cn(
+              "mt-10 pt-6 border-t border-white/10 transition-all duration-300",
+              isMobileMenuOpen ? "opacity-100" : "opacity-0"
+            )}
+            style={{ transitionDelay: isMobileMenuOpen ? "700ms" : "0ms" }}
+          >
+            <p className="font-body text-xs text-white/40 uppercase tracking-wider">
+              Sligo &amp; Leitrim, Ireland
+            </p>
+          </div>
         </div>
       </div>
     </header>

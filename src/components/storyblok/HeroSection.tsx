@@ -54,9 +54,22 @@ export default function HeroSection({
 }: HeroSectionProps) {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
+  const [youtubeId, setYoutubeId] = useState<string | null>(null)
 
   useEffect(() => {
-    // Attempt to play the background video on mount
+    // Extract YouTube video ID from video_bg if it's a YouTube URL
+    if (video_bg) {
+      const ytMatch = video_bg.match(
+        /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+      )
+      if (ytMatch) {
+        setYoutubeId(ytMatch[1])
+      }
+    }
+  }, [video_bg])
+
+  useEffect(() => {
+    // Attempt to play the background video on mount (for local .mp4 files)
     if (videoRef.current) {
       videoRef.current.play().catch(() => {})
     }
@@ -123,8 +136,20 @@ export default function HeroSection({
         paddingTopClasses[padding_top]
       )}
     >
-      {/* Background Video (looping, muted, autoplay) */}
-      {video_bg && (
+      {/* Background Video — YouTube embed or local .mp4 */}
+      {video_bg && youtubeId && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <iframe
+            src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=1&loop=1&playlist=${youtubeId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&vq=hd1080`}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.78vh] min-w-full min-h-full h-[56.25vw]"
+            allow="autoplay; encrypted-media"
+            allowFullScreen
+            title="Background video"
+            style={{ border: "none" }}
+          />
+        </div>
+      )}
+      {video_bg && !youtubeId && (
         <video
           ref={videoRef}
           autoPlay

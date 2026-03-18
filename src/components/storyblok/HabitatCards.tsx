@@ -46,7 +46,7 @@ const defaultHabitats: Habitat[] = [
 export default function HabitatCards({
   heading = "Habitats",
   eyebrow = "DIVERSE ECOSYSTEMS",
-  subtitle = "From species-rich grasslands to blanket bog, the Dartry Mountains support a remarkable variety of habitats and rare plant communities.",
+  subtitle = "These mountains are home to some of Ireland\u2019s rarest plants, species that have survived since the ice age. From species-rich grasslands to blanket bog, the Dartry Mountains support a remarkable variety of habitats and rare plant communities.",
   habitats,
   external_link_url = "https://www.wildflowersofireland.net",
   external_link_label = "Explore Wildflowers of Ireland",
