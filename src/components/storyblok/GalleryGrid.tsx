@@ -22,16 +22,15 @@ interface GalleryGridProps {
 }
 
 // Bento size patterns: each image gets a column span and row span
-// Pattern repeats every 8 images for visual rhythm
+// Pattern repeats every 7 images for even grid rhythm in a 4-col layout
 const BENTO_PATTERNS = [
   { colSpan: 2, rowSpan: 2 }, // Large feature
   { colSpan: 1, rowSpan: 1 }, // Small
   { colSpan: 1, rowSpan: 1 }, // Small
-  { colSpan: 1, rowSpan: 2 }, // Tall
+  { colSpan: 1, rowSpan: 1 }, // Small
   { colSpan: 1, rowSpan: 1 }, // Small
   { colSpan: 2, rowSpan: 1 }, // Wide
-  { colSpan: 1, rowSpan: 1 }, // Small
-  { colSpan: 1, rowSpan: 1 }, // Small
+  { colSpan: 2, rowSpan: 1 }, // Wide
 ]
 
 export default function GalleryGrid({
@@ -54,14 +53,19 @@ export default function GalleryGrid({
     if (e.key === "ArrowRight") navigateLightbox(1)
   }
 
+  // Trim to nearest multiple of pattern length for an even grid
+  const patternLen = BENTO_PATTERNS.length
+  const evenCount = Math.floor(images.length / patternLen) * patternLen || images.length
+  const trimmedImages = images.slice(0, evenCount)
+
   // Assign bento sizes to each image
   const bentoImages = useMemo(
     () =>
-      images.map((img, i) => ({
+      trimmedImages.map((img, i) => ({
         ...img,
         ...BENTO_PATTERNS[i % BENTO_PATTERNS.length],
       })),
-    [images]
+    [trimmedImages]
   )
 
   return (
@@ -80,6 +84,7 @@ export default function GalleryGrid({
           style={{
             gridTemplateColumns: "repeat(4, 1fr)",
             gridAutoRows: "minmax(140px, 1fr)",
+            gridAutoFlow: "dense",
           }}
         >
           {bentoImages.map(

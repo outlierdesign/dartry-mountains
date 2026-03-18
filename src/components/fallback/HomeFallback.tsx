@@ -56,7 +56,7 @@ export default async function HomeFallback() {
       <ScrollReveal>
         <ParallaxBreak
           image={{ filename: "/images/landscapes/eagles-rock.jpg", alt: "Eagles Rock in the Dartry Mountains" }}
-          quote="These mountains hold some of the most important habitats and species in all of Europe."
+          quote="These mountains are home to some of Ireland's rarest plants, species that have survived since the ice age."
           attribution=""
           overlay_opacity={0.55}
         />
