@@ -124,18 +124,12 @@ export default function Header() {
       <div
         className={cn(
           "fixed inset-0 z-40 lg:hidden transition-all duration-400",
-          isMobileMenuOpen ? "visible" : "invisible pointer-events-none"
+          isMobileMenuOpen
+            ? "visible opacity-100"
+            : "invisible opacity-0 pointer-events-none"
         )}
+        style={{ backgroundColor: "#122017" }}
       >
-        {/* Dark overlay background */}
-        <div
-          className={cn(
-            "absolute inset-0 bg-forest-dark/98 backdrop-blur-sm transition-opacity duration-400",
-            isMobileMenuOpen ? "opacity-100" : "opacity-0"
-          )}
-          onClick={() => setIsMobileMenuOpen(false)}
-        />
-
         {/* Menu content */}
         <div
           className={cn(
