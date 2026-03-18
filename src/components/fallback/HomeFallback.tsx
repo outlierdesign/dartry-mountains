@@ -8,11 +8,12 @@ import FarmingSection from "@/components/storyblok/FarmingSection"
 // StatsBar removed per feedback v2
 import MapSection from "@/components/storyblok/MapSection"
 import VisitResponsibly from "@/components/storyblok/VisitResponsibly"
+import HomeGallery from "@/components/shared/HomeGallery"
 import ResourceLinks from "@/components/storyblok/ResourceLinks"
 import CTABlock from "@/components/storyblok/CTABlock"
 import ScrollReveal from "@/components/shared/ScrollReveal"
 
-export default function HomeFallback() {
+export default async function HomeFallback() {
   return (
     <main>
       {/* 1. Hero Section */}
@@ -21,7 +22,7 @@ export default function HomeFallback() {
         heading="The Dartry Mountains"
         subheading="An iconic mountain range spanning the counties of Sligo and Leitrim, home to rare habitats, protected wildlife and a rich farming heritage."
         image={{ filename: "/images/landscapes/benbulben.jpg", alt: "Benbulben and the Dartry Mountains landscape" }}
-        video_bg="/video/hero.mp4"
+        // video_bg will be set to hosted URL once available
         overlay_opacity={0.45}
         show_scroll_indicator={true}
         cta_label="Explore the Mountains"
@@ -119,6 +120,13 @@ export default function HomeFallback() {
       <ScrollReveal>
         <div id="visit">
           <VisitResponsibly />
+        </div>
+      </ScrollReveal>
+
+      {/* 11b. Gallery */}
+      <ScrollReveal>
+        <div id="gallery">
+          <HomeGallery />
         </div>
       </ScrollReveal>
 

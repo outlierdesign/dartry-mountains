@@ -48,6 +48,8 @@ export const revalidate = 60;
 
 export default async function HomePage() {
   const story = await fetchStory("home");
-  if (!story) return <HomeFallback />;
+  // Fall back to the rich static homepage if Storyblok has no story
+  // OR if the story body is empty (no content blocks configured in the CMS)
+  if (!story || !story.content?.body?.length) return <HomeFallback />;
   return <StoryblokPage story={story} />;
 }
