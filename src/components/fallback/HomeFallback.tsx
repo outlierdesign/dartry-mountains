@@ -8,7 +8,7 @@ import FarmingSection from "@/components/storyblok/FarmingSection"
 // StatsBar removed per feedback v2
 import MapSection from "@/components/storyblok/MapSection"
 import VisitResponsibly from "@/components/storyblok/VisitResponsibly"
-import HomeGallery from "@/components/shared/HomeGallery"
+import HomeGallery from "@/components/shared/ClientHomeGallery"
 import ResourceLinks from "@/components/storyblok/ResourceLinks"
 import CTABlock from "@/components/storyblok/CTABlock"
 import ScrollReveal from "@/components/shared/ScrollReveal"
