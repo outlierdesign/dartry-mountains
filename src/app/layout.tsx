@@ -3,6 +3,7 @@ import StoryblokProvider from "@/components/StoryblokProvider";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import JsonLd from "@/components/shared/JsonLd";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -104,6 +105,7 @@ export default function RootLayout({
           <Footer />
           <JsonLd />
         </StoryblokProvider>
+        <Analytics />
       </body>
     </html>
   );
