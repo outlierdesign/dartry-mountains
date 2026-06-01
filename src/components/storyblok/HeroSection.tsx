@@ -56,6 +56,9 @@ export default function HeroSection({
   const videoRef = useRef<HTMLVideoElement>(null)
   const [youtubeId, setYoutubeId] = useState<string | null>(null)
 
+  // Treat .mp4 (or webm/ogg) URLs as native <video>; everything else as iframe (YouTube/Vimeo etc.)
+  const isNativeVideo = !!video_url && /\.(mp4|webm|ogg)(\?|#|$)/i.test(video_url)
+
   useEffect(() => {
     // Extract YouTube video ID from video_bg if it's a YouTube URL
     if (video_bg) {
@@ -74,6 +77,33 @@ export default function HeroSection({
       videoRef.current.play().catch(() => {})
     }
   }, [])
+
+  // Lightbox: lock body scroll, pause background video, handle ESC
+  useEffect(() => {
+    if (!isVideoPlaying) return
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+
+    // Pause the muted background video so audio from the lightbox isn't doubled visually
+    if (videoRef.current) {
+      videoRef.current.pause()
+    }
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsVideoPlaying(false)
+    }
+    window.addEventListener("keydown", onKey)
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener("keydown", onKey)
+      // Resume background video when lightbox closes
+      if (videoRef.current) {
+        videoRef.current.play().catch(() => {})
+      }
+    }
+  }, [isVideoPlaying])
 
   const paddingTopClasses = {
     none: "pt-0",
@@ -183,8 +213,8 @@ export default function HeroSection({
       {/* Overlay */}
       <div className="absolute inset-0" style={{ backgroundColor: `rgba(18, 32, 23, ${overlay_opacity})` }} />
 
-      {/* Video Play Button */}
-      {video_url && !isVideoPlaying && (
+      {/* Floating Play Button — only when video_url exists AND no secondary CTA is acting as the trigger */}
+      {video_url && !cta_secondary_label && !isVideoPlaying && (
         <button
           onClick={() => setIsVideoPlaying(true)}
           className="absolute z-20 w-20 h-20 rounded-full bg-gold-500/90 hover:bg-gold-500 flex items-center justify-center transition-all duration-300 hover:scale-110 group"
@@ -194,23 +224,45 @@ export default function HeroSection({
         </button>
       )}
 
-      {/* Video Iframe */}
+      {/* Video Lightbox */}
       {video_url && isVideoPlaying && (
-        <div className="absolute inset-0 z-30 bg-black">
-          <iframe
-            src={`${video_url}?autoplay=1`}
-            className="w-full h-full"
-            allow="autoplay; fullscreen"
-            allowFullScreen
-            title="Video"
-          />
+        <div
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 sm:p-8"
+          onClick={() => setIsVideoPlaying(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Video player"
+        >
           <button
             onClick={() => setIsVideoPlaying(false)}
-            className="absolute top-6 right-6 z-40 w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition-colors"
+            className="absolute top-4 right-4 sm:top-6 sm:right-6 z-10 w-10 h-10 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white text-xl transition-colors"
             aria-label="Close video"
           >
             ✕
           </button>
+          <div
+            className="relative w-full max-w-5xl aspect-video bg-black rounded-lg overflow-hidden shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {isNativeVideo ? (
+              <video
+                
+                src={video_url}
+                controls
+                autoPlay
+                playsInline
+                className="w-full h-full object-contain bg-black"
+              />
+            ) : (
+              <iframe
+                src={`${video_url}${video_url.includes("?") ? "&" : "?"}autoplay=1`}
+                className="w-full h-full"
+                allow="autoplay; fullscreen; encrypted-media"
+                allowFullScreen
+                title="Video"
+              />
+            )}
+          </div>
         </div>
       )}
 
@@ -233,8 +285,20 @@ export default function HeroSection({
             {cta_label && cta_link && (
               <Link href={cta_link} className="btn-primary">{cta_label}</Link>
             )}
-            {cta_secondary_label && cta_secondary_link && (
-              <Link href={cta_secondary_link} className="btn-outline text-white/80 border-white/30 hover:bg-white/10 hover:border-white/50 hover:text-white">{cta_secondary_label}</Link>
+            {cta_secondary_label && (
+              video_url ? (
+                <button
+                  type="button"
+                  onClick={() => setIsVideoPlaying(true)}
+                  className="btn-outline text-white/80 border-white/30 hover:bg-white/10 hover:border-white/50 hover:text-white inline-flex items-center gap-2"
+                  aria-label={cta_secondary_label}
+                >
+                  <Play className="w-4 h-4" aria-hidden="true" />
+                  {cta_secondary_label}
+                </button>
+              ) : cta_secondary_link ? (
+                <Link href={cta_secondary_link} className="btn-outline text-white/80 border-white/30 hover:bg-white/10 hover:border-white/50 hover:text-white">{cta_secondary_label}</Link>
+              ) : null
             )}
           </div>
         )}
