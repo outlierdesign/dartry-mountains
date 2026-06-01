@@ -290,14 +290,13 @@ export default function HeroSection({
                 <button
                   type="button"
                   onClick={() => setIsVideoPlaying(true)}
-                  className="btn-outline text-white/80 border-white/30 hover:bg-white/10 hover:border-white/50 hover:text-white inline-flex items-center gap-2"
+                  className="btn-outline text-white/80 border-white/30 hover:bg-white/10 hover:border-white/50 hover:text-white text-center"
                   aria-label={cta_secondary_label}
                 >
-                  <Play className="w-4 h-4" aria-hidden="true" />
                   {cta_secondary_label}
                 </button>
               ) : cta_secondary_link ? (
-                <Link href={cta_secondary_link} className="btn-outline text-white/80 border-white/30 hover:bg-white/10 hover:border-white/50 hover:text-white">{cta_secondary_label}</Link>
+                <Link href={cta_secondary_link} className="btn-outline text-white/80 border-white/30 hover:bg-white/10 hover:border-white/50 hover:text-white text-center">{cta_secondary_label}</Link>
               ) : null
             )}
           </div>
