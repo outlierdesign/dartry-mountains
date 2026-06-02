@@ -282,15 +282,12 @@ export default function HeroSection({
 
         {(cta_label || cta_secondary_label) && (
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            {cta_label && cta_link && (
-              <Link href={cta_link} className="btn-primary">{cta_label}</Link>
-            )}
             {cta_secondary_label && (
               video_url ? (
                 <button
                   type="button"
                   onClick={() => setIsVideoPlaying(true)}
-                  className="btn-outline text-white/80 border-white/30 hover:bg-white/10 hover:border-white/50 hover:text-white text-center"
+                  className="btn-primary text-center"
                   aria-label={cta_secondary_label}
                 >
                   {cta_secondary_label}
@@ -298,6 +295,9 @@ export default function HeroSection({
               ) : cta_secondary_link ? (
                 <Link href={cta_secondary_link} className="btn-outline text-white/80 border-white/30 hover:bg-white/10 hover:border-white/50 hover:text-white text-center">{cta_secondary_label}</Link>
               ) : null
+            )}
+            {cta_label && cta_link && (
+              <Link href={cta_link} className="btn-primary">{cta_label}</Link>
             )}
           </div>
         )}
